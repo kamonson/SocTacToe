@@ -47,8 +47,8 @@ namespace SocTacToe
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e) //about, needs updating
         {
-            MessageBox.Show(@"CS 313 networking project" + Environment.NewLine 
-                + @"By: Zeus and Brodi" + Environment.NewLine 
+            MessageBox.Show(@"CS 313 networking project" + Environment.NewLine
+                + @"By: Zeus and Brodie" + Environment.NewLine 
                 + @"Rules:" + Environment.NewLine 
                 + @"Seriously? I think you'll figure it out...", @"Soc Tac Toe");
         }
@@ -62,13 +62,13 @@ namespace SocTacToe
         {
             //if (!is_player_turn) return; //no clicking if not your _turn
             if (_winner) return; // no clicking after winning
-            var btn = (Button)sender; //make a var
+            var btn = (Button)sender; //make btn from any button you clicked
             if (btn.Text == P1 || btn.Text == P2) return; // safe guard from turning changing button
-            btn.BackColor = Color.Black;//background color of buttons
             _state.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set buttons to current _state
             CheckForWin();  //call 2x instant win results and check for win results begin and end _turn
             btn.Text = _turn ? P1 : P2;//check _turn, if 0 is X if 1 is O
             btn.ForeColor = _turn ? Color.Crimson : Color.Aqua; //check _turn set color, if 0 make crimson, if 1 make aqua
+            btn.BackColor = Color.Transparent;//background color of buttons
             _turn = !_turn; //change _turn
             _turnNumber++; //inc trun number
             _state.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
