@@ -1,0 +1,5 @@
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\bin\Debug\SynchronousSocketListener.exe.config
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\bin\Debug\SynchronousSocketListener.exe
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\bin\Debug\SynchronousSocketListener.pdb
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\obj\Debug\SynchronousSocketListener.exe
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\obj\Debug\SynchronousSocketListener.pdb

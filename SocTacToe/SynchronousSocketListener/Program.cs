@@ -1,7 +1,12 @@
-﻿using System;
+﻿
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
 using System.Windows.Forms;
 
-namespace SocTacToe //run program
+namespace SocTacToeServer
 {
     static class Program
     {
@@ -13,11 +18,8 @@ namespace SocTacToe //run program
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            SynchronousSocketClient.StartClient();
-            Application.Run(new SocTacToe());
+            SynchronousSocketListener.StartListening();
+            Application.Run(new Form1());
         }
-
-
     }
 }
-
