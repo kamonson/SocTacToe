@@ -39,7 +39,7 @@ namespace SocTacToe.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SocTacToe.Properties.Resources", typeof(Resources).Assembly);
+                    var temp = new global::System.Resources.ResourceManager("SocTacToe.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -65,7 +65,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap cats {
             get {
-                object obj = ResourceManager.GetObject("cats", resourceCulture);
+                var obj = ResourceManager.GetObject("cats", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -75,7 +75,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap o1 {
             get {
-                object obj = ResourceManager.GetObject("o1", resourceCulture);
+                var obj = ResourceManager.GetObject("o1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -85,7 +85,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap o2 {
             get {
-                object obj = ResourceManager.GetObject("o2", resourceCulture);
+                var obj = ResourceManager.GetObject("o2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,7 +95,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap o3 {
             get {
-                object obj = ResourceManager.GetObject("o3", resourceCulture);
+                var obj = ResourceManager.GetObject("o3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -105,7 +105,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap oa {
             get {
-                object obj = ResourceManager.GetObject("oa", resourceCulture);
+                var obj = ResourceManager.GetObject("oa", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -115,7 +115,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap ob {
             get {
-                object obj = ResourceManager.GetObject("ob", resourceCulture);
+                var obj = ResourceManager.GetObject("ob", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -125,7 +125,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap oc {
             get {
-                object obj = ResourceManager.GetObject("oc", resourceCulture);
+                var obj = ResourceManager.GetObject("oc", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -135,7 +135,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap oda1c3 {
             get {
-                object obj = ResourceManager.GetObject("oda1c3", resourceCulture);
+                var obj = ResourceManager.GetObject("oda1c3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -145,7 +145,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap oda3c1 {
             get {
-                object obj = ResourceManager.GetObject("oda3c1", resourceCulture);
+                var obj = ResourceManager.GetObject("oda3c1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -155,7 +155,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap STTBoard {
             get {
-                object obj = ResourceManager.GetObject("STTBoard", resourceCulture);
+                var obj = ResourceManager.GetObject("STTBoard", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -165,7 +165,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap x1 {
             get {
-                object obj = ResourceManager.GetObject("x1", resourceCulture);
+                var obj = ResourceManager.GetObject("x1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -175,7 +175,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap x2 {
             get {
-                object obj = ResourceManager.GetObject("x2", resourceCulture);
+                var obj = ResourceManager.GetObject("x2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -185,7 +185,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap x3 {
             get {
-                object obj = ResourceManager.GetObject("x3", resourceCulture);
+                var obj = ResourceManager.GetObject("x3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -195,7 +195,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap xa {
             get {
-                object obj = ResourceManager.GetObject("xa", resourceCulture);
+                var obj = ResourceManager.GetObject("xa", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -205,7 +205,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap xb {
             get {
-                object obj = ResourceManager.GetObject("xb", resourceCulture);
+                var obj = ResourceManager.GetObject("xb", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -215,7 +215,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap xc {
             get {
-                object obj = ResourceManager.GetObject("xc", resourceCulture);
+                var obj = ResourceManager.GetObject("xc", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -225,7 +225,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap xda1c3 {
             get {
-                object obj = ResourceManager.GetObject("xda1c3", resourceCulture);
+                var obj = ResourceManager.GetObject("xda1c3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -235,7 +235,7 @@ namespace SocTacToe.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap xda3c1 {
             get {
-                object obj = ResourceManager.GetObject("xda3c1", resourceCulture);
+                var obj = ResourceManager.GetObject("xda3c1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

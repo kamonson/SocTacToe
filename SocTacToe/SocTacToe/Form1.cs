@@ -38,11 +38,12 @@ namespace SocTacToe
         private const string P2 = "O"; //player 2 is o
         private int _turnNumber; //track number of games after 9 moves cat's
         //private readonly State _state = new State(); //_state to be passed around
-        private readonly SynchronousSocketClient _state = new SynchronousSocketClient(); //_state to be passed around
+        private readonly SynchronousSocketClient _state; //_state to be passed around
         readonly PictureBox _pictureBox1 = new PictureBox(); //innitialize picture box to be used
 
-        public SocTacToe() //start up make whats used
+        public SocTacToe(SynchronousSocketClient state) //start up make whats used
         {
+            _state = state;
             InitializeComponent();
         }
 

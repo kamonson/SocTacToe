@@ -14,7 +14,7 @@ namespace SocTacToe //run program
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             SynchronousSocketClient.StartClient();
-            Application.Run(new SocTacToe());
+            Application.Run(new SocTacToe(new SynchronousSocketClient()));
         }
 
 

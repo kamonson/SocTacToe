@@ -3,68 +3,71 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-public class SynchronousSocketClient
+namespace SocTacToe
 {
-    public static void StartClient()
+    public class SynchronousSocketClient
     {
-        // Data buffer for incoming data.
-        byte[] bytes = new byte[1024];
-
-        // Connect to a remote device.
-        try
+        public static void StartClient()
         {
-            // Establish the remote endpoint for the socket.
-            // This example uses port 11000 on the local computer.
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddress = ipHostInfo.AddressList[1];
-            //ipAddress = {10.28.34.71}
-            IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
+            // Data buffer for incoming data.
+            var bytes = new byte[1024];
 
-            // Create a TCP/IP  socket.
-            Socket sender = new Socket(AddressFamily.InterNetwork,
-                SocketType.Stream, ProtocolType.Tcp);
-
-            // Connect the socket to the remote endpoint. Catch any errors.
+            // Connect to a remote device.
             try
             {
-                sender.Connect(remoteEP);
+                // Establish the remote endpoint for the socket.
+                // This example uses port 11000 on the local computer.
+                var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+                var ipAddress = ipHostInfo.AddressList[3];
+                //ipAddress = {10.28.34.71}
+                var remoteEp = new IPEndPoint(ipAddress, 11000);
 
-                Console.WriteLine("Socket connected to {0}",
-                    sender.RemoteEndPoint.ToString());
+                // Create a TCP/IP  socket.
+                var sender = new Socket(AddressFamily.InterNetwork,
+                    SocketType.Stream, ProtocolType.Tcp);
 
-                // Encode the data string into a byte array.
-                byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
+                // Connect the socket to the remote endpoint. Catch any errors.
+                try
+                {
+                    sender.Connect(remoteEp);
 
-                // Send the data through the socket.
-                int bytesSent = sender.Send(msg);
+                    Console.WriteLine(@"Socket connected to {0}",
+                        sender.RemoteEndPoint);
 
-                // Receive the response from the remote device.
-                int bytesRec = sender.Receive(bytes);
-                Console.WriteLine("Echoed test = {0}",
-                    Encoding.ASCII.GetString(bytes, 0, bytesRec));
+                    // Encode the data string into a byte array.
+                    var msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
 
-                // Release the socket.
-                sender.Shutdown(SocketShutdown.Both);
-                sender.Close();
+                    // Send the data through the socket.
+                    sender.Send(msg);
 
-            }
-            catch (ArgumentNullException ane)
-            {
-                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-            }
-            catch (SocketException se)
-            {
-                Console.WriteLine("SocketException : {0}", se.ToString());
+                    // Receive the response from the remote device.
+                    var bytesRec = sender.Receive(bytes);
+                    Console.WriteLine(@"Echoed test = {0}",
+                        Encoding.ASCII.GetString(bytes, 0, bytesRec));
+
+                    // Release the socket.
+                    sender.Shutdown(SocketShutdown.Both);
+                    sender.Close();
+
+                }
+                catch (ArgumentNullException ane)
+                {
+                    Console.WriteLine(@"ArgumentNullException : {0}", ane);
+                }
+                catch (SocketException se)
+                {
+                    Console.WriteLine(@"SocketException : {0}", se);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(@"Unexpected exception : {0}", e);
+                }
+
             }
             catch (Exception e)
             {
-                Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                Console.WriteLine(e.ToString());
             }
-
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.ToString());
         }
     }
 }

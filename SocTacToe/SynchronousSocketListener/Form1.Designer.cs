@@ -1,4 +1,4 @@
-﻿namespace SocTacToeServer
+﻿namespace SynchronousSocketListener
 {
     partial class Form1
     {
@@ -28,12 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.textBoxServer = new System.Windows.Forms.RichTextBox();
+            this.SuspendLayout();
+            // 
+            // textBoxServer
+            // 
+            this.textBoxServer.Location = new System.Drawing.Point(12, 12);
+            this.textBoxServer.Name = "textBoxServer";
+            this.textBoxServer.Size = new System.Drawing.Size(260, 237);
+            this.textBoxServer.TabIndex = 0;
+            this.textBoxServer.Text = "";
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.textBoxServer);
+            this.Name = "Form1";
+            this.Text = "SocTacToeServer";
+            this.ResumeLayout(false);
         }
-
         #endregion
+
+        private System.Windows.Forms.RichTextBox textBoxServer;
+        public void AppendText(string text)
+        {
+            textBoxServer.AppendText("\n" + text);
+        }
     }
 }
 

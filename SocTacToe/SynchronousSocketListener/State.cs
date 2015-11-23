@@ -2,8 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-
-namespace SocTacToeServer
+namespace SynchronousSocketListener
 {
     public class State
     {

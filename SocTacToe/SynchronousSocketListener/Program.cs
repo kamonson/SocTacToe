@@ -1,12 +1,7 @@
-﻿
-using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-
+﻿using System;
 using System.Windows.Forms;
 
-namespace SocTacToeServer
+namespace SynchronousSocketListener
 {
     static class Program
     {
@@ -18,8 +13,7 @@ namespace SocTacToeServer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            SynchronousSocketListener.StartListening();
-            Application.Run(new Form1());
+            SynchronousSocketListener.StartServer();
         }
     }
 }
