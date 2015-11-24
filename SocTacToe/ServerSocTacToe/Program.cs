@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SocTacToe //run program
+namespace ServerSocTacToe
 {
     static class Program
     {
@@ -13,11 +16,7 @@ namespace SocTacToe //run program
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            SynchronousSocketClient.StartClient();
-            Application.Run(new SocTacToe());
+            Application.Run(new Form1());
         }
-
-
     }
 }
-

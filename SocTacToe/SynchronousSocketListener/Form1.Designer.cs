@@ -51,11 +51,7 @@
         }
         #endregion
 
-        private System.Windows.Forms.RichTextBox textBoxServer;
-        public void AppendText(string text)
-        {
-            textBoxServer.AppendText("\n" + text);
-        }
+        public static System.Windows.Forms.RichTextBox textBoxServer;
     }
 }
 

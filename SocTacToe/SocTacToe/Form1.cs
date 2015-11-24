@@ -38,12 +38,9 @@ namespace SocTacToe
         private const string P2 = "O"; //player 2 is o
         private int _turnNumber; //track number of games after 9 moves cat's
         //private readonly State _state = new State(); //_state to be passed around
-        private readonly SynchronousSocketClient _state; //_state to be passed around
         readonly PictureBox _pictureBox1 = new PictureBox(); //innitialize picture box to be used
-
-        public SocTacToe(SynchronousSocketClient state) //start up make whats used
+        public SocTacToe() //start up make whats used
         {
-            _state = state;
             InitializeComponent();
         }
 
@@ -146,7 +143,8 @@ namespace SocTacToe
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e) //call for reset with ne game button
         {
-         //   _state.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
+          var _state = new SynchronousSocketClient();
+            //   _state.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
         }
 
         private void ShowPicture(Image pic)

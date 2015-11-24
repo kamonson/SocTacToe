@@ -13,7 +13,11 @@ namespace SynchronousSocketListener
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            SynchronousSocketListener.StartServer();
+            var form = new Form1();
+            form.Show();
+            form.AppendText("Let's Get Started!\n");
+//            Server.StartListening(ref form);
+            Application.Run(Server.StartListening());
         }
     }
 }
