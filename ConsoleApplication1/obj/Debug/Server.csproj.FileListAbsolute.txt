@@ -1,0 +1,6 @@
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
