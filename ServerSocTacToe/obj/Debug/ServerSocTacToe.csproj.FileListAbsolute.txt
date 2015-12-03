@@ -16,3 +16,12 @@ C:\Users\Kyle\Documents\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.Prop
 C:\Users\Kyle\Documents\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.csproj.GenerateResource.Cache
 C:\Users\Kyle\Documents\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.exe
 C:\Users\Kyle\Documents\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.pdb
+C:\Users\Kyle\Documents\GitHub\SocTacToe\ServerSocTacToe\bin\Debug\ServerSocTacToe.exe.config
+C:\Users\Kyle\Documents\GitHub\SocTacToe\ServerSocTacToe\bin\Debug\ServerSocTacToe.exe
+C:\Users\Kyle\Documents\GitHub\SocTacToe\ServerSocTacToe\bin\Debug\ServerSocTacToe.pdb
+C:\Users\Kyle\Documents\GitHub\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.csprojResolveAssemblyReference.cache
+C:\Users\Kyle\Documents\GitHub\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.Properties.Resources.resources
+C:\Users\Kyle\Documents\GitHub\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.csproj.GenerateResource.Cache
+C:\Users\Kyle\Documents\GitHub\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.exe
+C:\Users\Kyle\Documents\GitHub\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.pdb
+C:\Users\Kyle\Documents\GitHub\SocTacToe\ServerSocTacToe\obj\Debug\ServerSocTacToe.SocTacToe.resources

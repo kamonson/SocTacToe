@@ -26,3 +26,13 @@ C:\Users\Kyle\Documents\SocTacToe\SocTacToe\obj\Debug\SocTacToe.Properties.Resou
 C:\Users\Kyle\Documents\SocTacToe\SocTacToe\obj\Debug\SocTacToe.csproj.GenerateResource.Cache
 C:\Users\Kyle\Documents\SocTacToe\SocTacToe\obj\Debug\SocTacToe.exe
 C:\Users\Kyle\Documents\SocTacToe\SocTacToe\obj\Debug\SocTacToe.pdb
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\bin\Debug\SocTacToe.exe.config
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\bin\Debug\SocTacToe.exe
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\bin\Debug\SocTacToe.pdb
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\obj\Debug\SocTacToe.csprojResolveAssemblyReference.cache
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\obj\Debug\SocTacToe.SocTacToe.resources
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\obj\Debug\SocTacToe.IpPortForm.resources
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\obj\Debug\SocTacToe.Properties.Resources.resources
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\obj\Debug\SocTacToe.csproj.GenerateResource.Cache
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\obj\Debug\SocTacToe.exe
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\obj\Debug\SocTacToe.pdb

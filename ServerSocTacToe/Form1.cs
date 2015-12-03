@@ -25,14 +25,21 @@ What we need to do next:
 
 using System;
 using System.Drawing;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
-using SocTacToe.Properties;
+using ServerSocTacToe.Properties;
 
-namespace SocTacToe
+namespace ServerSocTacToe
 {
     public partial class SocTacToe : Form
     {
-        SynchronousSocketClient state = new SynchronousSocketClient();
+        private string _data;
+        private bool _serving;
+        delegate void SetTextCallback(string text); //make thread safe call to _update lable
+        private State _state = new State();
         private bool _winner; //_turn tue if win
         private bool _turn = true; //X True O False
         private const string P1 = "X"; //player 1 is x
@@ -144,19 +151,13 @@ namespace SocTacToe
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e) //call for reset with ne game button
         {
-            
 
-          
+            Thread listenerThread = new Thread(Listen);
+            listenerThread.Start();
 
-            using (IpPortForm ipPortForm = new IpPortForm())
-            {
-                if (ipPortForm.ShowDialog() == DialogResult.OK)
-                {
-                }
-                var ip = ipPortForm.GetIp();
-                var port = ipPortForm.GetPort();
-                state.StartClient(ip, port);
-            }
+            // Form ipPortForm = new IpPortForm();
+
+            // ipPortForm.Show(); 
             //   _state.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
         }
 
@@ -168,6 +169,93 @@ namespace SocTacToe
             _pictureBox1.Image = pic;
             //_pictureBox1.BringToFront(); //problem, button disapears if on top
         }
+
+
+
+
+        private void Listen()
+        {
+            // enable form to display form info
+            // _data buffer for incoming data.
+            // Establish the local endpoint for the socket.
+            // Dns.GetHostName returns the name of the 
+            // host running the application.
+            _serving = true;
+            var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+            var ipAddress = ipHostInfo.AddressList[4];
+            var localEndPoint = new IPEndPoint(ipAddress, 11000);
+            Console.WriteLine(@"IP address is: " + ipAddress + @" Port is: 11000");
+            UpdateText(@"IP address is: " + ipAddress + Environment.NewLine + @"Port is: 11000");
+            // Create a TCP/IP socket.
+            var listener = new Socket(AddressFamily.InterNetwork,
+                SocketType.Stream, ProtocolType.Tcp);
+
+            // Bind the socket to the local endpoint and 
+            // Listen for incoming connections.
+            try
+            {
+                while (_serving)
+                {
+                    listener.Bind(localEndPoint);
+                    listener.Listen(10);
+
+                    // Start listening for connections.
+                    Console.WriteLine(@"Waiting for a connection...");
+                    UpdateText(@"Waiting for a connection...");
+                    // Program is suspended while waiting for an incoming connection.
+                    var handler = listener.Accept();
+                    _data = null;
+
+                    // An incoming connection needs to be processed.
+
+                    var bytes = new byte[1024];
+                    var bytesRec = handler.Receive(bytes);
+                    _data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    if (_data.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
+                    {
+                        // Show the data on the console.
+                        Console.WriteLine(@"Text received : {0}", _data);
+                        UpdateText(@"Text received : " + _data);
+
+                        //_update state text seperated with new line into vector <EOF> chopped off, WILL BE GOOD TO CHECK FOR WINNER AT SERVER
+                        _state.SetState(_data);
+
+                        // Send the data Array holding current state <EOF> added to the client NEED TO BE ABLE TO HANDLE MULTIPLE CLIENTS
+                        var msg = Encoding.ASCII.GetBytes(_state.GetState());
+
+                        handler.Send(msg);
+                    }
+                    else
+                    {
+                        handler.Shutdown(SocketShutdown.Both);
+                        handler.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                UpdateText(ex.ToString());
+            }
+            Console.WriteLine(@"Server is dead");
+            UpdateText(@"Server is dead");
+            Console.Read();
+        }
+
+        private void UpdateText(string text) //use callback to set run label _update on GUI thread instead of listener thread
+        {
+            if (label1.InvokeRequired)
+            {
+                var d = new SetTextCallback(UpdateText);
+                Invoke(d, new object[] { text });
+            }
+            else
+            {
+                label1.Text += Environment.NewLine + text;
+                label1.Refresh();
+            }
+        }
+
 
     }
 }
