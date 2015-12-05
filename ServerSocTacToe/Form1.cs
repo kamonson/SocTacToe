@@ -67,7 +67,7 @@ namespace ServerSocTacToe
 
         private void button_click(object sender, EventArgs e) //on any button click run this action, check if player should play, set buttons to _state, make move, set _state to buttons, end _turn
         {
-            //if (!is_player_turn) return; //no clicking if not your _turn
+            if (!_turn) return; //no clicking if not your _turn
             if (_winner) return; // no clicking after winning
             var btn = (Button)sender; //make a var
             if (btn.Text == P1 || btn.Text == P2) return; // safe guard from turning changing button
@@ -78,7 +78,7 @@ namespace ServerSocTacToe
             btn.ForeColor = _turn ? Color.Crimson : Color.Aqua; //check _turn set color, if 0 make crimson, if 1 make aqua
             _turn = !_turn; //change _turn
             _turnNumber++; //inc trun number
-                           //  _state.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
+ _state.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
             CheckForWin(); //call 2x instant win results and check for win results begin and end _turn
         }
 
@@ -151,14 +151,15 @@ namespace ServerSocTacToe
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e) //call for reset with ne game button
         {
-
+           _state.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
+            _state.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
             Thread listenerThread = new Thread(Listen);
             listenerThread.Start();
 
             // Form ipPortForm = new IpPortForm();
 
             // ipPortForm.Show(); 
-            //   _state.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
+            
         }
 
         private void ShowPicture(Image pic)
@@ -218,12 +219,14 @@ namespace ServerSocTacToe
                         UpdateText(@"Text received : " + _data);
 
                         //_update state text seperated with new line into vector <EOF> chopped off, WILL BE GOOD TO CHECK FOR WINNER AT SERVER
-                        _state.SetState(_data);
+                        _state.UpdateSetState(_data);
+                        if (_turn != true)
+                        {
+                            // Send the data Array holding current state <EOF> added to the client NEED TO BE ABLE TO HANDLE MULTIPLE CLIENTS
+                            var msg = Encoding.ASCII.GetBytes(_state.GetStateString());
 
-                        // Send the data Array holding current state <EOF> added to the client NEED TO BE ABLE TO HANDLE MULTIPLE CLIENTS
-                        var msg = Encoding.ASCII.GetBytes(_state.GetState());
-
-                        handler.Send(msg);
+                            handler.Send(msg);
+                        }
                     }
                     else
                     {
@@ -255,7 +258,5 @@ namespace ServerSocTacToe
                 label1.Refresh();
             }
         }
-
-
     }
 }

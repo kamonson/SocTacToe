@@ -25,6 +25,11 @@ What we need to do next:
 
 using System;
 using System.Drawing;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.Remoting.Channels;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using SocTacToe.Properties;
 
@@ -32,7 +37,9 @@ namespace SocTacToe
 {
     public partial class SocTacToe : Form
     {
-        SynchronousSocketClient state = new SynchronousSocketClient();
+        IPAddress _ip;
+        int _port;
+        State _state = new State();
         private bool _winner; //_turn tue if win
         private bool _turn = true; //X True O False
         private const string P1 = "X"; //player 1 is x
@@ -60,7 +67,7 @@ namespace SocTacToe
 
         private void button_click(object sender, EventArgs e) //on any button click run this action, check if player should play, set buttons to _state, make move, set _state to buttons, end _turn
         {
-            //if (!is_player_turn) return; //no clicking if not your _turn
+            if (!_turn) return; //no clicking if not your _turn
             if (_winner) return; // no clicking after winning
             var btn = (Button)sender; //make a var
             if (btn.Text == P1 || btn.Text == P2) return; // safe guard from turning changing button
@@ -71,7 +78,7 @@ namespace SocTacToe
             btn.ForeColor = _turn ? Color.Crimson : Color.Aqua; //check _turn set color, if 0 make crimson, if 1 make aqua
             _turn = !_turn; //change _turn
             _turnNumber++; //inc trun number
-                           //  _state.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
+            _state.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
             CheckForWin(); //call 2x instant win results and check for win results begin and end _turn
         }
 
@@ -142,20 +149,104 @@ namespace SocTacToe
             }
         }
 
+        bool _clienting = true;
+        private string _data;
+
+        public void StartClient()
+        {
+   
+                // Connect to a remote device.
+ 
+                    // Establish the remote endpoint for the socket.
+                    // This example uses port 11000 on the local computer.
+                    //var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+                    // var ipAddress = ip;//ipHostInfo.AddressList[3];
+                    //ipAddress = {10.28.34.71}
+                    var remoteEp = new IPEndPoint(_ip, _port);
+                    // Create a TCP/IP  socket.
+                    var sender = new Socket(AddressFamily.InterNetwork,
+                        SocketType.Stream, ProtocolType.Tcp);
+            while (_clienting)
+            {
+                // Connect the socket to the remote endpoint. Catch any errors.
+                try
+                    {
+                        sender.Connect(remoteEp);
+                        sender.Listen(10);
+
+                        Console.WriteLine(@"Socket connected to {0}",
+                            sender.RemoteEndPoint);
+                        if (_turn != true)
+                        {
+                            // Encode the data string into a byte array.
+                            var msg = Encoding.ASCII.GetBytes(_state.GetStateString());
+
+                            // Send the data through the socket.
+                            sender.Send(msg);
+                        }
+                        else
+                        {
+                            var handler = sender.Accept();
+                            var bytes = new byte[1024];
+                            var bytesRec = handler.Receive(bytes);
+                            _data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                            if (_data.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
+                            {
+                                // Show the data on the console.
+                                Console.WriteLine(@"Text received : {0}", _data);
+
+                                //_update state text seperated with new line into vector <EOF> chopped off, WILL BE GOOD TO CHECK FOR WINNER AT SERVER
+                                _state.UpdateSetState(_data);
+                            }
+                            // Receive the response from the remote device.
+
+                            Console.WriteLine(@"Echoed test = {0}",
+                                Encoding.ASCII.GetString(bytes, 0, bytesRec));
+
+                            // Release the socket.
+                            sender.Shutdown(SocketShutdown.Both);
+                            sender.Close();
+                        }
+                    }
+                    catch
+                        (ArgumentNullException
+                            ane)
+                    {
+                        Console.WriteLine(@"ArgumentNullException : {0}", ane);
+                    }
+                    catch
+                        (SocketException
+                            se)
+                    {
+                        Console.WriteLine(@"SocketException : {0}", se);
+                    }
+                    catch
+                        (Exception
+                            e)
+                    {
+                        Console.WriteLine(@"Unexpected exception : {0}", e);
+                    }
+
+                
+
+                }
+        }
+
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e) //call for reset with ne game button
         {
-            
 
-          
+            _state.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
 
             using (IpPortForm ipPortForm = new IpPortForm())
             {
                 if (ipPortForm.ShowDialog() == DialogResult.OK)
                 {
                 }
-                var ip = ipPortForm.GetIp();
-                var port = ipPortForm.GetPort();
-                state.StartClient(ip, port);
+                _ip = ipPortForm.GetIp();
+                _port = ipPortForm.GetPort();
+                _state.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
+                Thread listenerThread = new Thread(StartClient);
+                listenerThread.Start();
             }
             //   _state.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
         }
