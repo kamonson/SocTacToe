@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Drawing;
-using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Net.Sockets;
 using System.Windows.Forms;
 
 namespace ServerSocTacToe
 {
     public static class State
     {
+        static Socket ar;
         private static string _a1 = " ";
         private static string _a2 = " ";
         private static string _a3 = " ";
@@ -20,8 +21,20 @@ namespace ServerSocTacToe
         private static string _msg = " ";
         private static bool _turn;
         private static string _alphaTurn = "N";
-        //private static readonly ArrayList _vectorStates = new ArrayList();
+        // private static readonly ArrayList _vectorStates = new ArrayList();
         private static string _stateString;
+
+        public static void setAR(Socket ar)
+        {
+            State.ar = ar;
+        }
+
+        public static Socket getAR()
+        {
+            return ar;
+        }
+
+
 
         public static void UpdateSetState(string state) //set state to player strings info
         {

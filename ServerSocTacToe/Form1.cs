@@ -60,14 +60,14 @@ namespace ServerSocTacToe
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) //quit
         {
             Application.Exit();
-            //listener.Shutdown(SocketShutdown.Both);
+            listener.Shutdown(SocketShutdown.Both);
             listener.Close();
         }
 
         private void button_click(object sender, EventArgs e) //on any button click run this action, check if player should play, set buttons to _state, make move, set _state to buttons, end _turn
         {
             State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
-            if (!_turn) return; //no clicking if not your _turn
+            //if (!_turn) return; //no clicking if not your _turn
             if (_winner) return; // no clicking after winning
             var btn = (Button)sender; //make a var
             if (btn.Text == P1 || btn.Text == P2) return; // safe guard from turning changing button
@@ -78,6 +78,7 @@ namespace ServerSocTacToe
             _turn = !_turn; //change _turn
             _turnNumber++; //inc trun number
             State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
+            SendResponse(State.getAR(), State.GetStateString());
             CheckForWin(); //call 2x instant win results and check for win results begin and end _turn
         }
 
@@ -185,7 +186,7 @@ namespace ServerSocTacToe
 
             var timer1 = new System.Windows.Forms.Timer();
             timer1.Tick += new EventHandler(UpdateBoard);
-            timer1.Interval = 1000; // in miliseconds
+            timer1.Interval = 10; // in miliseconds
             timer1.Start();
 
         }
@@ -193,7 +194,7 @@ namespace ServerSocTacToe
         private void UpdateBoard(object o, EventArgs e)
         {
             State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
-
+            CheckForWin();
             if (button_A1.Text == "X") button_A1.ForeColor = Color.Crimson;
             else if (button_A1.Text == "O") button_A1.ForeColor = Color.Aqua;
 

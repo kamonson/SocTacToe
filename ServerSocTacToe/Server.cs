@@ -127,9 +127,9 @@ namespace ServerSocTacToe
                         content.Length, content);
 
                     State.UpdateSetState(content);
-
+                    State.setAR(handler);
                     // Echo the data back to the client.
-                    Send(handler, content);
+                   // Send(handler, State.GetStateString());
                 }
                 else
                 {
@@ -170,7 +170,24 @@ namespace ServerSocTacToe
                 Console.WriteLine(e.ToString());
             }
         }
-    }
+        public static void SendResponse(Socket ar, string stateString)
+        {
+            String content = String.Empty;
 
+            // Retrieve the state object and the handler socket
+            // from the asynchronous state object.
+            Socket handler = ar;
+
+          
+
+            
+
+                    // Echo the data back to the client.
+                    Send(handler, State.GetStateString());
+              
+            
+        }
+
+    }
 
 }
