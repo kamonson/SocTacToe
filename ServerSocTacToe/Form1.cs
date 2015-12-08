@@ -27,6 +27,7 @@ using System;
 using System.Drawing;
 using System.Net.Sockets;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 using ServerSocTacToe.Properties;
 using static ServerSocTacToe.AsynchronousSocketListener;
@@ -59,7 +60,7 @@ namespace ServerSocTacToe
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) //quit
         {
             Application.Exit();
-            listener.Shutdown(SocketShutdown.Both);
+            //listener.Shutdown(SocketShutdown.Both);
             listener.Close();
         }
 
@@ -83,19 +84,19 @@ namespace ServerSocTacToe
         private void CheckForWin() /*check - | \ for a _winner*/
         {
             /*hor win*/
-            if ((button_A1.Text == button_A2.Text) && (button_A2.Text == button_A3.Text) && (button_A1.Text != ""))
+            if ((button_A1.Text == button_A2.Text) && (button_A2.Text == button_A3.Text) && (button_A1.Text != " "))
             {
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.xa : Resources.oa);
                 _winner = true;
             }
-            else if ((button_B1.Text == button_B2.Text) && (button_B2.Text == button_B3.Text) && (button_B1.Text != ""))
+            else if ((button_B1.Text == button_B2.Text) && (button_B2.Text == button_B3.Text) && (button_B1.Text != " "))
             {
                 Lbl_Msg.Text = button_B1.Text + @" Wins!";
                 ShowPicture(button_B1.Text == P1 ? Resources.xb : Resources.ob);
                 _winner = true;
             }
-            else if ((button_C1.Text == button_C2.Text) && (button_C2.Text == button_C3.Text) && (button_C1.Text != ""))
+            else if ((button_C1.Text == button_C2.Text) && (button_C2.Text == button_C3.Text) && (button_C1.Text != " "))
             {
                 Lbl_Msg.Text = button_C1.Text + @" Wins!";
                 ShowPicture(button_C3.Text == P1 ? Resources.xc : Resources.oc);
@@ -104,19 +105,19 @@ namespace ServerSocTacToe
             /*end hor win*/
 
             /*vert win*/
-            else if ((button_A1.Text == button_B1.Text) && (button_B1.Text == button_C1.Text) && (button_A1.Text != ""))
+            else if ((button_A1.Text == button_B1.Text) && (button_B1.Text == button_C1.Text) && (button_A1.Text != " "))
             {
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.x1 : Resources.o1);
                 _winner = true;
             }
-            else if ((button_A2.Text == button_B2.Text) && (button_B2.Text == button_C2.Text) && (button_A2.Text != ""))
+            else if ((button_A2.Text == button_B2.Text) && (button_B2.Text == button_C2.Text) && (button_A2.Text != " "))
             {
                 Lbl_Msg.Text = button_A2.Text + @" Wins!";
                 ShowPicture(button_A2.Text == P1 ? Resources.x2 : Resources.o2);
                 _winner = true;
             }
-            else if ((button_A3.Text == button_B3.Text) && (button_B3.Text == button_C3.Text) && (button_A3.Text != ""))
+            else if ((button_A3.Text == button_B3.Text) && (button_B3.Text == button_C3.Text) && (button_A3.Text != " "))
             {
                 Lbl_Msg.Text = button_A3.Text + @" Wins!";
                 ShowPicture(button_A3.Text == P1 ? Resources.x3 : Resources.o3);
@@ -125,13 +126,13 @@ namespace ServerSocTacToe
             /*end vert win*/
 
             /*diag win*/
-            else if ((button_A1.Text == button_B2.Text) && (button_B2.Text == button_C3.Text) && (button_A1.Text != ""))
+            else if ((button_A1.Text == button_B2.Text) && (button_B2.Text == button_C3.Text) && (button_A1.Text != " "))
             {
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.xda1c3 : Resources.oda1c3);
                 _winner = true;
             }
-            else if ((button_A3.Text == button_B2.Text) && (button_B2.Text == button_C1.Text) && (button_A3.Text != ""))
+            else if ((button_A3.Text == button_B2.Text) && (button_B2.Text == button_C1.Text) && (button_A3.Text != " "))
             {
                 Lbl_Msg.Text = button_A3.Text + @" Wins!";
                 ShowPicture(button_A3.Text == P1 ? Resources.xda3c1 : Resources.oda3c1);
@@ -178,6 +179,47 @@ namespace ServerSocTacToe
 
             Thread listenerThread = new Thread(StartListening);
             listenerThread.Start();
+
+            //System.Threading.Timer timer = new System.Threading.Timer(UpdateBoard, "Some state", TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+            //Thread.Sleep(1000); // Wait a bit over 1second
+
+            var timer1 = new System.Windows.Forms.Timer();
+            timer1.Tick += new EventHandler(UpdateBoard);
+            timer1.Interval = 1000; // in miliseconds
+            timer1.Start();
+
+        }
+
+        private void UpdateBoard(object o, EventArgs e)
+        {
+            State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
+
+            if (button_A1.Text == "X") button_A1.ForeColor = Color.Crimson;
+            else if (button_A1.Text == "O") button_A1.ForeColor = Color.Aqua;
+
+            if (button_A2.Text == "X") button_A1.ForeColor = Color.Crimson;
+            else if (button_A2.Text == "O") button_A1.ForeColor = Color.Aqua;
+
+            if (button_A3.Text == "X") button_A1.ForeColor = Color.Crimson;
+            else if (button_A3.Text == "O") button_A1.ForeColor = Color.Aqua;
+
+            if (button_B1.Text == "X") button_A1.ForeColor = Color.Crimson;
+            else if (button_B1.Text == "O") button_A1.ForeColor = Color.Aqua;
+
+            if (button_B2.Text == "X") button_A1.ForeColor = Color.Crimson;
+            else if (button_B2.Text == "O") button_A1.ForeColor = Color.Aqua;
+
+            if (button_B3.Text == "X") button_A1.ForeColor = Color.Crimson;
+            else if (button_B3.Text == "O") button_A1.ForeColor = Color.Aqua;
+
+            if (button_C1.Text == "X") button_A1.ForeColor = Color.Crimson;
+            else if (button_C1.Text == "O") button_A1.ForeColor = Color.Aqua;
+
+            if (button_C2.Text == "X") button_A1.ForeColor = Color.Crimson;
+            else if (button_C2.Text == "O") button_A1.ForeColor = Color.Aqua;
+
+            if (button_C3.Text == "X") button_A1.ForeColor = Color.Crimson;
+            else if (button_C3.Text == "O") button_A1.ForeColor = Color.Aqua;
         }
     }
 }

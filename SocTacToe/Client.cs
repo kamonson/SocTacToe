@@ -74,8 +74,8 @@ namespace SocTacToe
                 Console.WriteLine("Response received : {0}", response);
 
                 // Release the socket.
-               // client.Shutdown(SocketShutdown.Both);
-               // client.Close();
+                // client.Shutdown(SocketShutdown.Both);
+                // client.Close();
 
             }
             catch (Exception e)
@@ -89,7 +89,7 @@ namespace SocTacToe
             try
             {
                 // Retrieve the socket from the state object.
-                Socket client = (Socket) ar.AsyncState;
+                Socket client = (Socket)ar.AsyncState;
 
                 // Complete the connection.
                 client.EndConnect(ar);
@@ -130,7 +130,7 @@ namespace SocTacToe
             {
                 // Retrieve the state object and the client socket 
                 // from the asynchronous state object.
-                StateObject state = (StateObject) ar.AsyncState;
+                StateObject state = (StateObject)ar.AsyncState;
                 Socket client = state.workSocket;
 
                 // Read data from the remote device.
@@ -177,7 +177,7 @@ namespace SocTacToe
             try
             {
                 // Retrieve the socket from the state object.
-                Socket client = (Socket) ar.AsyncState;
+                Socket client = (Socket)ar.AsyncState;
 
                 // Complete sending the data to the remote device.
                 int bytesSent = client.EndSend(ar);
@@ -220,6 +220,8 @@ namespace SocTacToe
                 // Receive the response from the remote device.
                 Receive(client);
                 receiveDone.WaitOne();
+
+                State.UpdateSetState(response);
 
                 // Write the response to the console.
                 Console.WriteLine("Response received : {0}", response);

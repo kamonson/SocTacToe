@@ -8,43 +8,38 @@ namespace ServerSocTacToe
 {
     public static class State
     {
-        private static string _a1 = "";
-        private static string _a2 = "";
-        private static string _a3 = "";
-        private static string _b1 = "";
-        private static string _b2 = "";
-        private static string _b3 = "";
-        private static string _c1 = "";
-        private static string _c2 = "";
-        private static string _c3 = "";
-        private static string _msg = "";
+        private static string _a1 = " ";
+        private static string _a2 = " ";
+        private static string _a3 = " ";
+        private static string _b1 = " ";
+        private static string _b2 = " ";
+        private static string _b3 = " ";
+        private static string _c1 = " ";
+        private static string _c2 = " ";
+        private static string _c3 = " ";
+        private static string _msg = " ";
         private static bool _turn;
-        private static string _alphaTurn = "";
-        private static readonly ArrayList _vectorStates = new ArrayList();
+        private static string _alphaTurn = "N";
+        //private static readonly ArrayList _vectorStates = new ArrayList();
         private static string _stateString;
 
         public static void UpdateSetState(string state) //set state to player strings info
         {
-            _vectorStates.Clear();
-            Regex regex = new Regex(@"!");
-            Match match = regex.Match(state);
-            while (match.NextMatch().Success)
-            {
-                _vectorStates.Add(match.Value);
-            }
-            _vectorStates.RemoveAt(_vectorStates.Count - 1);
+            _stateString = state;
 
-            _a1 = (string)_vectorStates[0];
-            _a2 = (string)_vectorStates[0];
-            _a3 = (string)_vectorStates[0];
-            _b1 = (string)_vectorStates[0];
-            _b2 = (string)_vectorStates[0];
-            _b3 = (string)_vectorStates[0];
-            _c1 = (string)_vectorStates[0];
-            _c2 = (string)_vectorStates[0];
-            _c3 = (string)_vectorStates[0];
-            _msg = (string)_vectorStates[0];
-            _alphaTurn = (string)_vectorStates[0];
+            string[] states = state.Split('!');
+
+            _a1 = states[0];
+            _a2 = states[1];
+            _a3 = states[2];
+            _b1 = states[3];
+            _b2 = states[4];
+            _b3 = states[5];
+            _c1 = states[6];
+            _c2 = states[7];
+            _c3 = states[8];
+            _msg = states[9];
+            _alphaTurn = states[10];
         }
 
         public static bool GetTurn()
@@ -76,7 +71,6 @@ namespace ServerSocTacToe
             _msg = msg.Text;
             _turn = turn;
 
-            _vectorStates.Clear();
             _stateString = null;
             UpdateSetStateString(a1.Text);
             UpdateSetStateString(a2.Text);
@@ -88,41 +82,46 @@ namespace ServerSocTacToe
             UpdateSetStateString(c2.Text);
             UpdateSetStateString(c3.Text);
             UpdateSetStateString(msg.Text);
-            UpdateSetStateString(_alphaTurn = turn ? "t" : "n");
+            UpdateSetStateString(_alphaTurn = turn ? "Y" : "N");
             _stateString += "<EOF>";
         }
 
         public static void GetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn) //set buttons to state
         {
-            if (_vectorStates.Count != 0)
+            UpdateSetState(_stateString);
+            a1.Text = _a1;
+            a2.Text = _a2;
+            a3.Text = _a3;
+            b1.Text = _b1;
+            b2.Text = _b2;
+            b3.Text = _b3;
+            c1.Text = _c1;
+            c2.Text = _c2;
+            c3.Text = _c3;
+            msg.Text = _msg;
+            if (_alphaTurn == "Y")
             {
-                a1.Text = (string)_vectorStates[0];
-                a2.Text = (string)_vectorStates[1];
-                a3.Text = (string)_vectorStates[2];
-                b1.Text = (string)_vectorStates[3];
-                b2.Text = (string)_vectorStates[4];
-                b3.Text = (string)_vectorStates[5];
-                c1.Text = (string)_vectorStates[6];
-                c2.Text = (string)_vectorStates[7];
-                c3.Text = (string)_vectorStates[8];
-                msg.Text = (string)_vectorStates[9];
-                turn = (string)_vectorStates[10] == "y";
+                turn = true;
+            }
+            else
+            {
+                turn = false;
             }
         }
 
         public static void ResetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref int turnNumber, ref bool winner, PictureBox pbox, ref bool turn) //restart state
         {
             if (turnNumber < 0) throw new ArgumentOutOfRangeException(nameof(turnNumber));
-            a1.Text = "";
-            a2.Text = "";
-            a3.Text = "";
-            b1.Text = "";
-            b2.Text = "";
-            b3.Text = "";
-            c1.Text = "";
-            c2.Text = "";
-            c3.Text = "";
-            msg.Text = "";
+            a1.Text = " ";
+            a2.Text = " ";
+            a3.Text = " ";
+            b1.Text = " ";
+            b2.Text = " ";
+            b3.Text = " ";
+            c1.Text = " ";
+            c2.Text = " ";
+            c3.Text = " ";
+            msg.Text = " ";
             a1.ForeColor = Color.Black;
             a2.ForeColor = Color.Black;
             a3.ForeColor = Color.Black;
@@ -145,7 +144,7 @@ namespace ServerSocTacToe
             _c3 = c3.Text;
             _msg = msg.Text;
             pbox.Image = null;
-            turn = true;
+            turn = false;
         }
     }
 }
