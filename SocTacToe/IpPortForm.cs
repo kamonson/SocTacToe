@@ -6,28 +6,43 @@ namespace SocTacToe
 {
     public partial class IpPortForm : Form
     {
-        public IPAddress Ip;
+        private IPAddress _ip;
+        private int _port;
 
+        /// <summary>
+        /// Return IPaddress value of IP Address
+        /// </summary>
+        /// <returns></returns>
         public IPAddress GetIp()
         {
-            return Ip;
+            return _ip;
         }
 
-        public int Port;
+        /// <summary>
+        /// Return int value of Port
+        /// </summary>
         public int GetPort()
         {
-            return Port;
+            return _port;
         }
 
+        /// <summary>
+        /// Make IP/Port Form
+        /// </summary>
         public IpPortForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// send back IP Address and Port Number
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            Ip = IPAddress.Parse(textBoxIP.Text);
-            Port = int.Parse(textBoxPort.Text);
+            _ip = IPAddress.Parse(textBoxIP.Text);
+            _port = int.Parse(textBoxPort.Text);
             Close();
         }
     }
