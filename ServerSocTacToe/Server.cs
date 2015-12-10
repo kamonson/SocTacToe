@@ -21,7 +21,7 @@ namespace ServerSocTacToe
         // Incoming data from the client.
         public static string data;
 
-        public static void StartListening()
+        public static void StartListening(SocTacToe.Del updateFormCallback)
         {
             // Data buffer for incoming data.
             byte[] bytes;
@@ -33,13 +33,12 @@ namespace ServerSocTacToe
             _ipAddress = ipHostInfo.AddressList[1];
             IPEndPoint localEndPoint = new IPEndPoint(_ipAddress, 11000);
             Console.WriteLine(_ipAddress.ToString());
-
             // Create a TCP/IP socket.
             Socket listener = new Socket(AddressFamily.InterNetwork,
                 SocketType.Stream, ProtocolType.Tcp);
-
             // Bind the socket to the local endpoint and 
             // listen for incoming connections.
+            updateFormCallback();
             try
             {
                 listener.Bind(localEndPoint);
@@ -62,11 +61,13 @@ namespace ServerSocTacToe
                         if (data.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
                         {
                             State.UpdateSetState(Encoding.ASCII.GetString(bytes, 0, bytesRec));
+                            updateFormCallback();
                             break;
                         }
                     }
                     // Show the data on the console.
                     Console.WriteLine(@"Text received : {0}", data);
+            
                 }
 
             }
@@ -74,11 +75,17 @@ namespace ServerSocTacToe
             {
                 Console.WriteLine(e.ToString());
             }
+        }
 
-
-            Handler.Shutdown(SocketShutdown.Both);
-            Handler.Close();
-
+        public static void ShutdownConnection()
+        {
+            if (Handler != null)
+            {
+                Handler.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+                Handler.Disconnect(false);
+                Handler.Shutdown(SocketShutdown.Both);
+                Handler.Close();
+            }
         }
     }
 }

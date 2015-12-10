@@ -82,37 +82,56 @@ namespace SocTacToe
             UpdateSetState(_stateString);
         }
 
-        public static void GetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn) //set buttons to state
+        public static void GetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn)
         {
             a1.Text = _a1;
             if (a1.Text == @"X") a1.ForeColor = Color.Crimson;
             else if (a1.Text == @"O") a1.ForeColor = Color.Aqua;
+            else a1.ForeColor = Color.Black;
+
             a2.Text = _a2;
             if (a2.Text == @"X") a2.ForeColor = Color.Crimson;
             else if (a2.Text == @"O") a2.ForeColor = Color.Aqua;
+            else a2.ForeColor = Color.Black;
+
             a3.Text = _a3;
             if (a3.Text == @"X") a3.ForeColor = Color.Crimson;
             else if (a3.Text == @"O") a3.ForeColor = Color.Aqua;
+            else a3.ForeColor = Color.Black;
+
             b1.Text = _b1;
             if (b1.Text == @"X") b1.ForeColor = Color.Crimson;
             else if (b1.Text == @"O") b1.ForeColor = Color.Aqua;
+            else b1.ForeColor = Color.Black;
+
             b2.Text = _b2;
             if (b2.Text == @"X") b2.ForeColor = Color.Crimson;
             else if (b2.Text == @"O") b2.ForeColor = Color.Aqua;
+            else b2.ForeColor = Color.Black;
+
             b3.Text = _b3;
             if (b3.Text == @"X") b3.ForeColor = Color.Crimson;
             else if (b3.Text == @"O") b3.ForeColor = Color.Aqua;
+            else b3.ForeColor = Color.Black;
+
             c1.Text = _c1;
             if (c1.Text == @"X") c1.ForeColor = Color.Crimson;
             else if (c1.Text == @"O") c1.ForeColor = Color.Aqua;
+            else c1.ForeColor = Color.Black;
+
             c2.Text = _c2;
             if (c2.Text == @"X") c2.ForeColor = Color.Crimson;
             else if (c2.Text == @"O") c2.ForeColor = Color.Aqua;
+            else c2.ForeColor = Color.Black;
+
             c3.Text = _c3;
             if (c3.Text == @"X") c3.ForeColor = Color.Crimson;
             else if (c3.Text == @"O") c3.ForeColor = Color.Aqua;
+            else c3.ForeColor = Color.Black;
+
             msg.Text = _msg;
             msg.ForeColor = Color.Yellow;
+
             if (_alphaTurn == "C")
             {
                 turn = true;

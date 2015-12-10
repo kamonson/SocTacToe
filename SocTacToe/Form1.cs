@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Net;
-using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 using SocTacToe.Properties;
-using Timer = System.Windows.Forms.Timer;
 
 namespace SocTacToe
 {
@@ -19,6 +17,9 @@ namespace SocTacToe
         private const string P2 = "O";
         private int _turnNumber;
         readonly PictureBox _pictureBox1 = new PictureBox();
+        public delegate void Del();
+        Del delegateHandler;
+        delegate void SetTextCallback();
 
         public SocTacToe()
         {
@@ -34,17 +35,9 @@ namespace SocTacToe
                 }
                 _ip = ipPortForm.GetIp();
                 _port = ipPortForm.GetPort();
-
-                Thread clientThread = new Thread(() => SynchronousSocketClient.StartClient(_ip, _port));
+                delegateHandler = UpdateBoard;
+                Thread clientThread = new Thread(() => SynchronousSocketClient.StartClient(_ip, _port, delegateHandler));
                 clientThread.Start();
-
-                //System.Threading.Timer timer = new System.Threading.Timer(UpdateBoard, "Some state", TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
-                //Thread.Sleep(1000); // Wait a bit over 1second
-
-                var timer1 = new Timer();
-                timer1.Tick += UpdateBoard;
-                timer1.Interval = 500; // in miliseconds
-                timer1.Start();
             }
         }
 
@@ -58,9 +51,13 @@ namespace SocTacToe
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SynchronousSocketClient.Sender.Shutdown(SocketShutdown.Both);
-            SynchronousSocketClient.Sender.Close();
-            Application.Exit();
+            {
+                if (SynchronousSocketClient.Sender != null)
+                {
+                    new Thread(SynchronousSocketClient.ShutdownConnection).Start();
+                }
+                Application.Exit();
+            }
         }
 
         private void button_click(object sender, EventArgs e)
@@ -78,7 +75,7 @@ namespace SocTacToe
             _turnNumber++;
             State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
             CheckForWin();
-            new Thread(() => SynchronousSocketClient.StartClient(_ip, _port)).Start();
+            new Thread(() => SynchronousSocketClient.StartClient(_ip, _port, delegateHandler)).Start();
         }
 
         private void CheckForWin()
@@ -89,18 +86,21 @@ namespace SocTacToe
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.xa : Resources.oa);
                 _winner = true;
+                _turn = true;
             }
             else if ((button_B1.Text == button_B2.Text) && (button_B2.Text == button_B3.Text) && (button_B1.Text != @" "))
             {
                 Lbl_Msg.Text = button_B1.Text + @" Wins!";
                 ShowPicture(button_B1.Text == P1 ? Resources.xb : Resources.ob);
                 _winner = true;
+                _turn = true;
             }
             else if ((button_C1.Text == button_C2.Text) && (button_C2.Text == button_C3.Text) && (button_C1.Text != @" "))
             {
                 Lbl_Msg.Text = button_C1.Text + @" Wins!";
                 ShowPicture(button_C3.Text == P1 ? Resources.xc : Resources.oc);
                 _winner = true;
+                _turn = true;
             }
             /*end hor win*/
 
@@ -110,18 +110,21 @@ namespace SocTacToe
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.x1 : Resources.o1);
                 _winner = true;
+                _turn = true;
             }
             else if ((button_A2.Text == button_B2.Text) && (button_B2.Text == button_C2.Text) && (button_A2.Text != @" "))
             {
                 Lbl_Msg.Text = button_A2.Text + @" Wins!";
                 ShowPicture(button_A2.Text == P1 ? Resources.x2 : Resources.o2);
                 _winner = true;
+                _turn = true;
             }
             else if ((button_A3.Text == button_B3.Text) && (button_B3.Text == button_C3.Text) && (button_A3.Text != @" "))
             {
                 Lbl_Msg.Text = button_A3.Text + @" Wins!";
                 ShowPicture(button_A3.Text == P1 ? Resources.x3 : Resources.o3);
                 _winner = true;
+                _turn = true;
             }
             /*end vert win*/
 
@@ -131,20 +134,29 @@ namespace SocTacToe
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.xda1c3 : Resources.oda1c3);
                 _winner = true;
+                _turn = true;
             }
             else if ((button_A3.Text == button_B2.Text) && (button_B2.Text == button_C1.Text) && (button_A3.Text != @" "))
             {
                 Lbl_Msg.Text = button_A3.Text + @" Wins!";
                 ShowPicture(button_A3.Text == P1 ? Resources.xda3c1 : Resources.oda3c1);
                 _winner = true;
+                _turn = true;
             }
             /*end diag win*/
 
-            else if (_turnNumber == 9)
+            else if (button_A1.Text != @" " && button_A2.Text != @" " && button_A3.Text != @" " && button_B1.Text != @" " &&
+                     button_B2.Text != @" " && button_B3.Text != @" " && button_C1.Text != @" " && button_C2.Text != @" " &&
+                     button_C3.Text != @" ")
             {
                 Lbl_Msg.Text = @"Cat's Game!";
                 ShowPicture(Resources.cats);
                 _winner = true;
+                _turn = true;
+            }
+            else
+            {
+                _pictureBox1.Hide();
             }
         }
 
@@ -154,18 +166,36 @@ namespace SocTacToe
             Controls.Add(_pictureBox1);
             _pictureBox1.BackColor = Color.Transparent;
             _pictureBox1.Image = pic;
+            _pictureBox1.Show();
         }
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            State.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn);
-            State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
+            if (_turn == false)
+            {
+                Lbl_Msg.Text = @"Wait Your Turn Before Starting New Game";
+            }
+            else
+            {
+                State.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn);
+                State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
+                new Thread(() => SynchronousSocketClient.StartClient(_ip, _port, delegateHandler)).Start();
+            }
         }
 
-        private void UpdateBoard(object o, EventArgs e)
+        private void UpdateBoard()
         {
-            State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
-            CheckForWin();
+            if (Lbl_Msg.InvokeRequired)
+            {
+                SetTextCallback d = UpdateBoard;
+                Invoke(d, new object[] { });
+            }
+            else
+            {
+                State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2,
+                    button_C3, Lbl_Msg, ref _turn);
+                CheckForWin();
+            }
         }
     }
 }
