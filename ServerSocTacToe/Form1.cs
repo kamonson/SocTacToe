@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Timers;
 using System.Windows.Forms;
 using ServerSocTacToe.Properties;
+using Timer = System.Windows.Forms.Timer;
 
 namespace ServerSocTacToe
 {
@@ -30,9 +30,9 @@ namespace ServerSocTacToe
             //System.Threading.Timer timer = new System.Threading.Timer(UpdateBoard, "Some state", TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
             //Thread.Sleep(1000); // Wait a bit over 1second
 
-            var timer1 = new System.Windows.Forms.Timer();
-            timer1.Tick += new EventHandler(UpdateBoard);
-            timer1.Interval = 500; // in miliseconds
+            var timer1 = new Timer();
+            timer1.Tick += UpdateBoard;
+            timer1.Interval = 1000; // in miliseconds
             timer1.Start();
         }
 
@@ -47,8 +47,8 @@ namespace ServerSocTacToe
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
-            SynchronousSocketListener.handler.Shutdown(SocketShutdown.Both);
-            SynchronousSocketListener.handler.Close();
+            SynchronousSocketListener.Handler.Shutdown(SocketShutdown.Both);
+            SynchronousSocketListener.Handler.Close();
         }
 
         private void button_click(object sender, EventArgs e)
@@ -65,26 +65,26 @@ namespace ServerSocTacToe
             _turn = !_turn;
             _turnNumber++;
             State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
-            SynchronousSocketListener.handler.Send(Encoding.ASCII.GetBytes(State.GetStateString()));
+            SynchronousSocketListener.Handler.Send(Encoding.ASCII.GetBytes(State.GetStateString()));
             CheckForWin();
         }
 
         private void CheckForWin()
         {
             /*hor win*/
-            if ((button_A1.Text == button_A2.Text) && (button_A2.Text == button_A3.Text) && (button_A1.Text != " "))
+            if ((button_A1.Text == button_A2.Text) && (button_A2.Text == button_A3.Text) && (button_A1.Text != @" "))
             {
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.xa : Resources.oa);
                 _winner = true;
             }
-            else if ((button_B1.Text == button_B2.Text) && (button_B2.Text == button_B3.Text) && (button_B1.Text != " "))
+            else if ((button_B1.Text == button_B2.Text) && (button_B2.Text == button_B3.Text) && (button_B1.Text != @" "))
             {
                 Lbl_Msg.Text = button_B1.Text + @" Wins!";
                 ShowPicture(button_B1.Text == P1 ? Resources.xb : Resources.ob);
                 _winner = true;
             }
-            else if ((button_C1.Text == button_C2.Text) && (button_C2.Text == button_C3.Text) && (button_C1.Text != " "))
+            else if ((button_C1.Text == button_C2.Text) && (button_C2.Text == button_C3.Text) && (button_C1.Text != @" "))
             {
                 Lbl_Msg.Text = button_C1.Text + @" Wins!";
                 ShowPicture(button_C3.Text == P1 ? Resources.xc : Resources.oc);
@@ -93,19 +93,19 @@ namespace ServerSocTacToe
             /*end hor win*/
 
             /*vert win*/
-            else if ((button_A1.Text == button_B1.Text) && (button_B1.Text == button_C1.Text) && (button_A1.Text != " "))
+            else if ((button_A1.Text == button_B1.Text) && (button_B1.Text == button_C1.Text) && (button_A1.Text != @" "))
             {
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.x1 : Resources.o1);
                 _winner = true;
             }
-            else if ((button_A2.Text == button_B2.Text) && (button_B2.Text == button_C2.Text) && (button_A2.Text != " "))
+            else if ((button_A2.Text == button_B2.Text) && (button_B2.Text == button_C2.Text) && (button_A2.Text != @" "))
             {
                 Lbl_Msg.Text = button_A2.Text + @" Wins!";
                 ShowPicture(button_A2.Text == P1 ? Resources.x2 : Resources.o2);
                 _winner = true;
             }
-            else if ((button_A3.Text == button_B3.Text) && (button_B3.Text == button_C3.Text) && (button_A3.Text != " "))
+            else if ((button_A3.Text == button_B3.Text) && (button_B3.Text == button_C3.Text) && (button_A3.Text != @" "))
             {
                 Lbl_Msg.Text = button_A3.Text + @" Wins!";
                 ShowPicture(button_A3.Text == P1 ? Resources.x3 : Resources.o3);
@@ -114,13 +114,13 @@ namespace ServerSocTacToe
             /*end vert win*/
 
             /*diag win*/
-            else if ((button_A1.Text == button_B2.Text) && (button_B2.Text == button_C3.Text) && (button_A1.Text != " "))
+            else if ((button_A1.Text == button_B2.Text) && (button_B2.Text == button_C3.Text) && (button_A1.Text != @" "))
             {
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.xda1c3 : Resources.oda1c3);
                 _winner = true;
             }
-            else if ((button_A3.Text == button_B2.Text) && (button_B2.Text == button_C1.Text) && (button_A3.Text != " "))
+            else if ((button_A3.Text == button_B2.Text) && (button_B2.Text == button_C1.Text) && (button_A3.Text != @" "))
             {
                 Lbl_Msg.Text = button_A3.Text + @" Wins!";
                 ShowPicture(button_A3.Text == P1 ? Resources.xda3c1 : Resources.oda3c1);
@@ -135,7 +135,6 @@ namespace ServerSocTacToe
                 _winner = true;
             }
         }
-
 
         private void ShowPicture(Image pic)
         {
@@ -155,9 +154,9 @@ namespace ServerSocTacToe
         {
             State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
             CheckForWin();
-            if (SynchronousSocketListener.getIPString() != null)
+            if (SynchronousSocketListener.GetIpString() != null)
             {
-                label1.Text = @"IP Adress: " + SynchronousSocketListener.getIPString() + @"   Port: 11000";
+                label1.Text = @"IP Adress: " + SynchronousSocketListener.GetIpString() + @"   Port: 11000";
             }
         }
     }

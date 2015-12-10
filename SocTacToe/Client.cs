@@ -7,6 +7,7 @@ namespace SocTacToe
 {
     public class SynchronousSocketClient
     {
+        //handler is a public static object to conrol client end socket
         public static Socket sender;
         public static void StartClient(IPAddress _ip, int _port)
         {
@@ -23,8 +24,8 @@ namespace SocTacToe
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
 
                 // Create a TCP/IP  socket.
-                    sender = new Socket(AddressFamily.InterNetwork,
-                    SocketType.Stream, ProtocolType.Tcp);
+                sender = new Socket(AddressFamily.InterNetwork,
+                SocketType.Stream, ProtocolType.Tcp);
 
                 // Connect the socket to the remote endpoint. Catch any errors.
                 try
@@ -32,7 +33,7 @@ namespace SocTacToe
                     sender.Connect(remoteEP);
 
                     Console.WriteLine("Socket connected to {0}",
-                        sender.RemoteEndPoint.ToString());
+                        sender.RemoteEndPoint);
 
                     // Encode the data string into a byte array.
                     byte[] msg = Encoding.ASCII.GetBytes(State.GetStateString());
@@ -44,30 +45,34 @@ namespace SocTacToe
                     int bytesRec = sender.Receive(bytes);
                     Console.WriteLine("Echoed test = {0}",
                         Encoding.ASCII.GetString(bytes, 0, bytesRec));
-                    State.UpdateSetState(Encoding.ASCII.GetString(bytes, 0 ,bytesRec));
 
-                    // Release the socket.
-                    //sender.Shutdown(SocketShutdown.Both);
-                    //sender.Close();
-
+                    State.UpdateSetState(Encoding.ASCII.GetString(bytes, 0, bytesRec));
                 }
                 catch (ArgumentNullException ane)
                 {
-                    Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+                    Console.WriteLine("ArgumentNullException : {0}", ane);
+                    sender.Shutdown(SocketShutdown.Both);
+                    sender.Close();
                 }
                 catch (SocketException se)
                 {
-                    Console.WriteLine("SocketException : {0}", se.ToString());
+                    Console.WriteLine("SocketException : {0}", se);
+                    sender.Shutdown(SocketShutdown.Both);
+                    sender.Close();
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                    Console.WriteLine("Unexpected exception : {0}", e);
+                    sender.Shutdown(SocketShutdown.Both);
+                    sender.Close();
                 }
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                sender.Shutdown(SocketShutdown.Both);
+                sender.Close();
             }
         }
     }

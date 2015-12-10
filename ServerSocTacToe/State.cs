@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Drawing;
-using System.Net.Sockets;
 using System.Windows.Forms;
 
 namespace ServerSocTacToe
 {
     public static class State
     {
-        static Socket ar;
         private static string _a1 = " ";
         private static string _a2 = " ";
         private static string _a3 = " ";
@@ -20,26 +18,12 @@ namespace ServerSocTacToe
         private static string _msg = " ";
         private static bool _turn;
         private static string _alphaTurn = "C";
-        // private static readonly ArrayList _vectorStates = new ArrayList();
         private static string _stateString;
 
-        public static void setAR(Socket ar)
-        {
-            State.ar = ar;
-        }
-
-        public static Socket getAR()
-        {
-            return ar;
-        }
-
-
-
-        public static void UpdateSetState(string state) //set state to player strings info
+        public static void UpdateSetState(string state)
         {
             _stateString = state;
             string[] states = state.Split('!');
-
             _a1 = states[0];
             _a2 = states[1];
             _a3 = states[2];
@@ -63,12 +47,12 @@ namespace ServerSocTacToe
             return _stateString;
         }
 
-        private static void UpdateSetStateString(string state) //set strings to state
+        private static void UpdateSetStateString(string state)
         {
             _stateString += (state + "!");
         }
 
-        public static void SetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn) //set state to player buttons info
+        public static void SetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn)
         {
             _a1 = a1.Text;
             _a2 = a2.Text;
@@ -98,39 +82,38 @@ namespace ServerSocTacToe
             UpdateSetState(_stateString);
         }
 
-        public static void GetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn) //set buttons to state
+        public static void GetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn)
         {
-            //UpdateSetState(_stateString);
             a1.Text = _a1;
-            if (a1.Text == "X") a1.ForeColor = Color.Crimson;
-            else if (a1.Text == "O") a1.ForeColor = Color.Aqua;
+            if (a1.Text == @"X") a1.ForeColor = Color.Crimson;
+            else if (a1.Text == @"O") a1.ForeColor = Color.Aqua;
             a2.Text = _a2;
-            if (a2.Text == "X") a2.ForeColor = Color.Crimson;
-            else if (a2.Text == "O") a2.ForeColor = Color.Aqua;
+            if (a2.Text == @"X") a2.ForeColor = Color.Crimson;
+            else if (a2.Text == @"O") a2.ForeColor = Color.Aqua;
             a3.Text = _a3;
-            if (a3.Text == "X") a3.ForeColor = Color.Crimson;
-            else if (a3.Text == "O") a3.ForeColor = Color.Aqua;
+            if (a3.Text == @"X") a3.ForeColor = Color.Crimson;
+            else if (a3.Text == @"O") a3.ForeColor = Color.Aqua;
             b1.Text = _b1;
-            if (b1.Text == "X") b1.ForeColor = Color.Crimson;
-            else if (b1.Text == "O") b1.ForeColor = Color.Aqua;
+            if (b1.Text == @"X") b1.ForeColor = Color.Crimson;
+            else if (b1.Text == @"O") b1.ForeColor = Color.Aqua;
             b2.Text = _b2;
-            if (b2.Text == "X") b2.ForeColor = Color.Crimson;
-            else if (b2.Text == "O") b2.ForeColor = Color.Aqua;
+            if (b2.Text == @"X") b2.ForeColor = Color.Crimson;
+            else if (b2.Text == @"O") b2.ForeColor = Color.Aqua;
             b3.Text = _b3;
-            if (b3.Text == "X") b3.ForeColor = Color.Crimson;
-            else if (b3.Text == "O") b3.ForeColor = Color.Aqua;
+            if (b3.Text == @"X") b3.ForeColor = Color.Crimson;
+            else if (b3.Text == @"O") b3.ForeColor = Color.Aqua;
             c1.Text = _c1;
-            if (c1.Text == "X") c1.ForeColor = Color.Crimson;
-            else if (c1.Text == "O") c1.ForeColor = Color.Aqua;
+            if (c1.Text == @"X") c1.ForeColor = Color.Crimson;
+            else if (c1.Text == @"O") c1.ForeColor = Color.Aqua;
             c2.Text = _c2;
-            if (c2.Text == "X") c2.ForeColor = Color.Crimson;
-            else if (c2.Text == "O") c2.ForeColor = Color.Aqua;
+            if (c2.Text == @"X") c2.ForeColor = Color.Crimson;
+            else if (c2.Text == @"O") c2.ForeColor = Color.Aqua;
             c3.Text = _c3;
-            if (c3.Text == "X") c3.ForeColor = Color.Crimson;
-            else if (c3.Text == "O") c3.ForeColor = Color.Aqua;
+            if (c3.Text == @"X") c3.ForeColor = Color.Crimson;
+            else if (c3.Text == @"O") c3.ForeColor = Color.Aqua;
             msg.Text = _msg;
             msg.ForeColor = Color.Yellow;
-            if (_alphaTurn == "S")
+            if (_alphaTurn == @"S")
             {
                 turn = true;
             }
@@ -143,16 +126,16 @@ namespace ServerSocTacToe
         public static void ResetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref int turnNumber, ref bool winner, PictureBox pbox, ref bool turn) //restart state
         {
             if (turnNumber < 0) throw new ArgumentOutOfRangeException(nameof(turnNumber));
-            a1.Text = " ";
-            a2.Text = " ";
-            a3.Text = " ";
-            b1.Text = " ";
-            b2.Text = " ";
-            b3.Text = " ";
-            c1.Text = " ";
-            c2.Text = " ";
-            c3.Text = " ";
-            msg.Text = " ";
+            a1.Text = @" ";
+            a2.Text = @" ";
+            a3.Text = @" ";
+            b1.Text = @" ";
+            b2.Text = @" ";
+            b3.Text = @" ";
+            c1.Text = @" ";
+            c2.Text = @" ";
+            c3.Text = @" ";
+            msg.Text = @" ";
             a1.ForeColor = Color.Black;
             a2.ForeColor = Color.Black;
             a3.ForeColor = Color.Black;

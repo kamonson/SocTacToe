@@ -1,36 +1,11 @@
-﻿/*
-What we need to do next:
-    Add Socket!
-        Server Starts with blank _state
-        Client1 recieves Server _state and loads it
-        Client2 recieves Server _state and loads it
-        Client1 Changes _state
-        Client2 is locked out of _state changing
-        Server and Client 2 wait
-        Client1 pushes up _state to server
-        Client1 and Client 2 refresh their _state
-        Client2 Changes _state
-        Client1 is locked out of changing their _state
-        Server and Client1 wait
-        Server2 pushes _state to server
-
-    Make a Queue
-        Players can watch game while they wait their turn to play
-            Winner stays on
-            Looser goes to back of queue
-            Cat's game both are loosers
-
-    Known bug: ShowPicture .bringtofront() loses button graphics
-*/
-
-using System;
+﻿using System;
 using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Timers;
 using System.Windows.Forms;
 using SocTacToe.Properties;
+using Timer = System.Windows.Forms.Timer;
 
 namespace SocTacToe
 {
@@ -38,14 +13,14 @@ namespace SocTacToe
     {
         IPAddress _ip;
         int _port;
-        private bool _winner; //_turn tue if win
-        private bool _turn = false; //X True O False
-        private const string P1 = "X"; //player 1 is x
-        private const string P2 = "O"; //player 2 is o
-        private int _turnNumber; //track number of games after 9 moves cat's
-        //private readonly State _state = new State(); //_state to be passed around
-        readonly PictureBox _pictureBox1 = new PictureBox(); //innitialize picture box to be used
-        public SocTacToe() //start up make whats used
+        private bool _winner;
+        private bool _turn;
+        private const string P1 = "X";
+        private const string P2 = "O";
+        private int _turnNumber;
+        readonly PictureBox _pictureBox1 = new PictureBox();
+
+        public SocTacToe()
         {
             InitializeComponent();
 
@@ -59,23 +34,21 @@ namespace SocTacToe
                 }
                 _ip = ipPortForm.GetIp();
                 _port = ipPortForm.GetPort();
-                
+
                 Thread clientThread = new Thread(() => SynchronousSocketClient.StartClient(_ip, _port));
                 clientThread.Start();
 
-                //System.Threading.Timer timer = new System.Threading.Timer(UpdateBoard, "Some state",
-                //    TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+                //System.Threading.Timer timer = new System.Threading.Timer(UpdateBoard, "Some state", TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
                 //Thread.Sleep(1000); // Wait a bit over 1second
 
-                var timer1 = new System.Windows.Forms.Timer();
-                timer1.Tick += new EventHandler(UpdateBoard);
+                var timer1 = new Timer();
+                timer1.Tick += UpdateBoard;
                 timer1.Interval = 500; // in miliseconds
                 timer1.Start();
             }
-
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) //about, needs updating
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show(@"CS 313 networking project" + Environment.NewLine
                 + @"By: Zeus and Brodi" + Environment.NewLine
@@ -83,32 +56,32 @@ namespace SocTacToe
                 + @"Seriously? I think you'll figure it out...", @"Soc Tac Toe");
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e) //quit
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SynchronousSocketClient.sender.Shutdown(SocketShutdown.Both);
             SynchronousSocketClient.sender.Close();
             Application.Exit();
         }
 
-        private void button_click(object sender, EventArgs e) //on any button click run this action, check if player should play, set buttons to _state, make move, set _state to buttons, end _turn
+        private void button_click(object sender, EventArgs e)
         {
-            //State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
-            if (!_turn) return; //no clicking if not your _turn
-            if (_winner) return; // no clicking after winning
-            var btn = (Button)sender; //make a var
-            if (btn.Text == P1 || btn.Text == P2) return; // safe guard from turning changing button
-            btn.BackColor = Color.Black;//background color of buttons                                       
-            CheckForWin();  //call 2x instant win results and check for win results begin and end _turn
-            btn.Text = _turn ? P2 : P1;//check _turn, if 0 is X if 1 is O
-            btn.ForeColor = _turn ? Color.Crimson : Color.Aqua; //check _turn set color, if 0 make crimson, if 1 make aqua
-            _turn = !_turn; //change _turn
-            _turnNumber++; //inc trun number
-            State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
-            CheckForWin(); //call 2x instant win results and check for win results begin and end _turn
+            State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
+            if (!_turn) return;
+            if (_winner) return;
+            var btn = (Button)sender;
+            if (btn.Text == P1 || btn.Text == P2) return;
+            btn.BackColor = Color.Black;
+            CheckForWin();
+            btn.Text = _turn ? P2 : P1;
+            btn.ForeColor = _turn ? Color.Crimson : Color.Aqua;
+            _turn = !_turn;
+            _turnNumber++;
+            State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
+            CheckForWin();
             new Thread(() => SynchronousSocketClient.StartClient(_ip, _port)).Start();
         }
 
-        private void CheckForWin() /*check - | \ for a _winner*/
+        private void CheckForWin()
         {
             /*hor win*/
             if ((button_A1.Text == button_A2.Text) && (button_A2.Text == button_A3.Text) && (button_A1.Text != " "))
@@ -167,14 +140,13 @@ namespace SocTacToe
             }
             /*end diag win*/
 
-            else if (_turnNumber == 9) //no winner
+            else if (_turnNumber == 9)
             {
                 Lbl_Msg.Text = @"Cat's Game!";
                 ShowPicture(Resources.cats);
                 _winner = true;
             }
         }
-
 
         private void ShowPicture(Image pic)
         {

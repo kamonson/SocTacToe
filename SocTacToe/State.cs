@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Drawing;
-using System.Net.Sockets;
 using System.Windows.Forms;
 
 namespace SocTacToe
 {
     public static class State
     {
-        static Socket ar;
         private static string _a1 = " ";
         private static string _a2 = " ";
         private static string _a3 = " ";
@@ -21,26 +18,12 @@ namespace SocTacToe
         private static string _msg = " ";
         private static bool _turn;
         private static string _alphaTurn = "S";
-        // private static readonly ArrayList _vectorStates = new ArrayList();
         private static string _stateString;
 
-        public static void setAR(Socket ar)
-        {
-            State.ar = ar;
-        }
-
-        public static Socket getAR()
-        {
-            return ar;
-        }
-
-
-
-        public static void UpdateSetState(string state) //set state to player strings info
+        public static void UpdateSetState(string state)
         {
             _stateString = state;
             string[] states = state.Split('!');
-
             _a1 = states[0];
             _a2 = states[1];
             _a3 = states[2];
@@ -64,12 +47,12 @@ namespace SocTacToe
             return _stateString;
         }
 
-        private static void UpdateSetStateString(string state) //set strings to state
+        private static void UpdateSetStateString(string state)
         {
             _stateString += (state + "!");
         }
 
-        public static void SetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn) //set state to player buttons info
+        public static void SetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn)
         {
             _a1 = a1.Text;
             _a2 = a2.Text;
@@ -101,7 +84,6 @@ namespace SocTacToe
 
         public static void GetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn) //set buttons to state
         {
-            //UpdateSetState(_stateString);
             a1.Text = _a1;
             if (a1.Text == "X") a1.ForeColor = Color.Crimson;
             else if (a1.Text == "O") a1.ForeColor = Color.Aqua;

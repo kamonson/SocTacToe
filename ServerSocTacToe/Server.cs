@@ -1,36 +1,38 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
 namespace ServerSocTacToe
 {
-    public class SynchronousSocketListener
+    public static class SynchronousSocketListener
     {
-        public static IPAddress ipAddress;
+        private static IPAddress _ipAddress;
 
-        public static string getIPString()
+        public static string GetIpString()
         {
-           if(ipAddress != null) return ipAddress.ToString();
+            if (_ipAddress != null) return _ipAddress.ToString();
             return string.Empty;
         }
-        public static Socket handler;
+
+        //Handler is a public static object to conrol server end socket
+        public static Socket Handler;
+
         // Incoming data from the client.
-        public static string data = null;
+        public static string data;
 
         public static void StartListening()
         {
             // Data buffer for incoming data.
-            byte[] bytes = new Byte[1024];
+            byte[] bytes;
 
             // Establish the local endpoint for the socket.
             // Dns.GetHostName returns the name of the 
             // host running the application.
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            ipAddress = ipHostInfo.AddressList[1];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
-            Console.WriteLine(ipAddress.ToString());
+            _ipAddress = ipHostInfo.AddressList[1];
+            IPEndPoint localEndPoint = new IPEndPoint(_ipAddress, 11000);
+            Console.WriteLine(_ipAddress.ToString());
 
             // Create a TCP/IP socket.
             Socket listener = new Socket(AddressFamily.InterNetwork,
@@ -46,33 +48,25 @@ namespace ServerSocTacToe
                 // Start listening for connections.
                 while (true)
                 {
-                    Console.WriteLine("Waiting for a connection...");
+                    Console.WriteLine(@"Waiting for a connection...");
                     // Program is suspended while waiting for an incoming connection.
-                    handler = listener.Accept();
+                    Handler = listener.Accept();
                     data = null;
 
                     // An incoming connection needs to be processed.
                     while (true)
                     {
                         bytes = new byte[1024];
-                        int bytesRec = handler.Receive(bytes);
+                        int bytesRec = Handler.Receive(bytes);
                         data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                        if (data.IndexOf("<EOF>") > -1)
+                        if (data.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
                         {
                             State.UpdateSetState(Encoding.ASCII.GetString(bytes, 0, bytesRec));
                             break;
                         }
                     }
-
                     // Show the data on the console.
-                    Console.WriteLine("Text received : {0}", data);
-
-                    // Echo the data back to the client.
-                    byte[] msg = Encoding.ASCII.GetBytes(data);
-
-                    //handler.Send(msg);
-                    //handler.Shutdown(SocketShutdown.Both);
-                    //handler.Close();
+                    Console.WriteLine(@"Text received : {0}", data);
                 }
 
             }
@@ -81,8 +75,9 @@ namespace ServerSocTacToe
                 Console.WriteLine(e.ToString());
             }
 
-            Console.WriteLine("\nPress ENTER to continue...");
-            Console.Read();
+
+            Handler.Shutdown(SocketShutdown.Both);
+            Handler.Close();
 
         }
     }

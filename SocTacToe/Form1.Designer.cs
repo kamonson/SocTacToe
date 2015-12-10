@@ -1,11 +1,14 @@
-﻿namespace SocTacToe
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace SocTacToe
 {
     partial class SocTacToe
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -261,22 +264,22 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_A1;
-        private System.Windows.Forms.Button button_A2;
-        private System.Windows.Forms.Button button_A3;
-        private System.Windows.Forms.Button button_B1;
-        private System.Windows.Forms.Button button_B2;
-        private System.Windows.Forms.Button button_B3;
-        private System.Windows.Forms.Button button_C1;
-        private System.Windows.Forms.Button button_C2;
-        private System.Windows.Forms.Button button_C3;
-        private System.Windows.Forms.Label Lbl_Msg;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newGameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private Button button_A1;
+        private Button button_A2;
+        private Button button_A3;
+        private Button button_B1;
+        private Button button_B2;
+        private Button button_B3;
+        private Button button_C1;
+        private Button button_C2;
+        private Button button_C3;
+        private Label Lbl_Msg;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem newGameToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 
