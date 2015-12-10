@@ -58,8 +58,8 @@ namespace SocTacToe
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SynchronousSocketClient.sender.Shutdown(SocketShutdown.Both);
-            SynchronousSocketClient.sender.Close();
+            SynchronousSocketClient.Sender.Shutdown(SocketShutdown.Both);
+            SynchronousSocketClient.Sender.Close();
             Application.Exit();
         }
 
@@ -84,19 +84,19 @@ namespace SocTacToe
         private void CheckForWin()
         {
             /*hor win*/
-            if ((button_A1.Text == button_A2.Text) && (button_A2.Text == button_A3.Text) && (button_A1.Text != " "))
+            if ((button_A1.Text == button_A2.Text) && (button_A2.Text == button_A3.Text) && (button_A1.Text != @" "))
             {
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.xa : Resources.oa);
                 _winner = true;
             }
-            else if ((button_B1.Text == button_B2.Text) && (button_B2.Text == button_B3.Text) && (button_B1.Text != " "))
+            else if ((button_B1.Text == button_B2.Text) && (button_B2.Text == button_B3.Text) && (button_B1.Text != @" "))
             {
                 Lbl_Msg.Text = button_B1.Text + @" Wins!";
                 ShowPicture(button_B1.Text == P1 ? Resources.xb : Resources.ob);
                 _winner = true;
             }
-            else if ((button_C1.Text == button_C2.Text) && (button_C2.Text == button_C3.Text) && (button_C1.Text != " "))
+            else if ((button_C1.Text == button_C2.Text) && (button_C2.Text == button_C3.Text) && (button_C1.Text != @" "))
             {
                 Lbl_Msg.Text = button_C1.Text + @" Wins!";
                 ShowPicture(button_C3.Text == P1 ? Resources.xc : Resources.oc);
@@ -105,19 +105,19 @@ namespace SocTacToe
             /*end hor win*/
 
             /*vert win*/
-            else if ((button_A1.Text == button_B1.Text) && (button_B1.Text == button_C1.Text) && (button_A1.Text != " "))
+            else if ((button_A1.Text == button_B1.Text) && (button_B1.Text == button_C1.Text) && (button_A1.Text != @" "))
             {
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.x1 : Resources.o1);
                 _winner = true;
             }
-            else if ((button_A2.Text == button_B2.Text) && (button_B2.Text == button_C2.Text) && (button_A2.Text != " "))
+            else if ((button_A2.Text == button_B2.Text) && (button_B2.Text == button_C2.Text) && (button_A2.Text != @" "))
             {
                 Lbl_Msg.Text = button_A2.Text + @" Wins!";
                 ShowPicture(button_A2.Text == P1 ? Resources.x2 : Resources.o2);
                 _winner = true;
             }
-            else if ((button_A3.Text == button_B3.Text) && (button_B3.Text == button_C3.Text) && (button_A3.Text != " "))
+            else if ((button_A3.Text == button_B3.Text) && (button_B3.Text == button_C3.Text) && (button_A3.Text != @" "))
             {
                 Lbl_Msg.Text = button_A3.Text + @" Wins!";
                 ShowPicture(button_A3.Text == P1 ? Resources.x3 : Resources.o3);
@@ -126,13 +126,13 @@ namespace SocTacToe
             /*end vert win*/
 
             /*diag win*/
-            else if ((button_A1.Text == button_B2.Text) && (button_B2.Text == button_C3.Text) && (button_A1.Text != " "))
+            else if ((button_A1.Text == button_B2.Text) && (button_B2.Text == button_C3.Text) && (button_A1.Text != @" "))
             {
                 Lbl_Msg.Text = button_A1.Text + @" Wins!";
                 ShowPicture(button_A1.Text == P1 ? Resources.xda1c3 : Resources.oda1c3);
                 _winner = true;
             }
-            else if ((button_A3.Text == button_B2.Text) && (button_B2.Text == button_C1.Text) && (button_A3.Text != " "))
+            else if ((button_A3.Text == button_B2.Text) && (button_B2.Text == button_C1.Text) && (button_A3.Text != @" "))
             {
                 Lbl_Msg.Text = button_A3.Text + @" Wins!";
                 ShowPicture(button_A3.Text == P1 ? Resources.xda3c1 : Resources.oda3c1);
