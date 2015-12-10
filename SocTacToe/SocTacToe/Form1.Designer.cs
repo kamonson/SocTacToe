@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SocTacToe));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(SocTacToe));
             this.button_A1 = new System.Windows.Forms.Button();
             this.button_A2 = new System.Windows.Forms.Button();
             this.button_A3 = new System.Windows.Forms.Button();

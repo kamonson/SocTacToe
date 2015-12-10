@@ -1,3 +1,11 @@
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SocTacToe\bin\Debug\SocTacToe.exe.config
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SocTacToe\obj\Debug\SocTacToe.exe
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SocTacToe\obj\Debug\SocTacToe.pdb
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SocTacToe\bin\Debug\SocTacToe.exe
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SocTacToe\bin\Debug\SocTacToe.pdb
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SocTacToe\obj\Debug\SocTacToe.SocTacToe.resources
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SocTacToe\obj\Debug\SocTacToe.Properties.Resources.resources
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SocTacToe\obj\Debug\SocTacToe.csproj.GenerateResource.Cache
 C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SocTacToe\bin\Debug\SocTacToe.exe.config
 C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SocTacToe\bin\Debug\SocTacToe.exe
 C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SocTacToe\bin\Debug\SocTacToe.pdb

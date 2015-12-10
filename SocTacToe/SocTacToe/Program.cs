@@ -13,7 +13,11 @@ namespace SocTacToe //run program
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            SynchronousSocketClient.StartClient();
             Application.Run(new SocTacToe());
         }
+
+
     }
 }
+

@@ -1,0 +1,12 @@
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SynchronousSocketListener\bin\Debug\SynchronousSocketListener.exe.config
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SynchronousSocketListener\obj\Debug\SynchronousSocketListener.exe
+C:\Users\kamonson17\Desktop\SocTacToe-master\SocTacToe\SynchronousSocketListener\obj\Debug\SynchronousSocketListener.pdb
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SynchronousSocketListener\bin\Debug\SynchronousSocketListener.exe.config
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SynchronousSocketListener\bin\Debug\SynchronousSocketListener.exe
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SynchronousSocketListener\bin\Debug\SynchronousSocketListener.pdb
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SynchronousSocketListener\obj\Debug\SocTacToeServer.csprojResolveAssemblyReference.cache
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SynchronousSocketListener\obj\Debug\SynchronousSocketListener.Form1.resources
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SynchronousSocketListener\obj\Debug\SynchronousSocketListener.Properties.Resources.resources
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SynchronousSocketListener\obj\Debug\SocTacToeServer.csproj.GenerateResource.Cache
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SynchronousSocketListener\obj\Debug\SynchronousSocketListener.exe
+C:\Users\Kyle\Documents\GitHub\SocTacToe\SocTacToe\SynchronousSocketListener\obj\Debug\SynchronousSocketListener.pdb
