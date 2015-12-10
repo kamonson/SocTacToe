@@ -69,7 +69,7 @@ namespace SocTacToe
 
                 var timer1 = new System.Windows.Forms.Timer();
                 timer1.Tick += new EventHandler(UpdateBoard);
-                timer1.Interval = 1000; // in miliseconds
+                timer1.Interval = 500; // in miliseconds
                 timer1.Start();
             }
 
@@ -105,7 +105,7 @@ namespace SocTacToe
             _turnNumber++; //inc trun number
             State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
             CheckForWin(); //call 2x instant win results and check for win results begin and end _turn
-            SynchronousSocketClient.StartClient(_ip, _port);
+            new Thread(() => SynchronousSocketClient.StartClient(_ip, _port)).Start();
         }
 
         private void CheckForWin() /*check - | \ for a _winner*/

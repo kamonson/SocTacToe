@@ -1,29 +1,4 @@
-﻿/*
-What we need to do next:
-    Add Socket!
-        Server Starts with blank _state
-        Client1 recieves Server _state and loads it
-        Client2 recieves Server _state and loads it
-        Client1 Changes _state
-        Client2 is locked out of _state changing
-        Server and Client 2 wait
-        Client1 pushes up _state to server
-        Client1 and Client 2 refresh their _state
-        Client2 Changes _state
-        Client1 is locked out of changing their _state
-        Server and Client1 wait
-        Server2 pushes _state to server
-
-    Make a Queue
-        Players can watch game while they wait their turn to play
-            Winner stays on
-            Looser goes to back of queue
-            Cat's game both are loosers
-
-    Known bug: ShowPicture .bringtofront() loses button graphics
-*/
-
-using System;
+﻿using System;
 using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
@@ -57,7 +32,7 @@ namespace ServerSocTacToe
 
             var timer1 = new System.Windows.Forms.Timer();
             timer1.Tick += new EventHandler(UpdateBoard);
-            timer1.Interval = 1000; // in miliseconds
+            timer1.Interval = 500; // in miliseconds
             timer1.Start();
         }
 
@@ -182,7 +157,7 @@ namespace ServerSocTacToe
             CheckForWin();
             if (SynchronousSocketListener.getIPString() != null)
             {
-                label1.Text = @"IP Adress: " + SynchronousSocketListener.getIPString() + @" | Port: 11000";
+                label1.Text = @"IP Adress: " + SynchronousSocketListener.getIPString() + @"   Port: 11000";
             }
         }
     }
