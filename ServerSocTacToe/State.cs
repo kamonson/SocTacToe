@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Globalization;
 using System.Net.Sockets;
 using System.Windows.Forms;
 
@@ -20,7 +19,7 @@ namespace ServerSocTacToe
         private static string _c3 = " ";
         private static string _msg = " ";
         private static bool _turn;
-        private static string _alphaTurn = "N";
+        private static string _alphaTurn = "C";
         // private static readonly ArrayList _vectorStates = new ArrayList();
         private static string _stateString;
 
@@ -39,7 +38,6 @@ namespace ServerSocTacToe
         public static void UpdateSetState(string state) //set state to player strings info
         {
             _stateString = state;
-
             string[] states = state.Split('!');
 
             _a1 = states[0];
@@ -95,24 +93,44 @@ namespace ServerSocTacToe
             UpdateSetStateString(c2.Text);
             UpdateSetStateString(c3.Text);
             UpdateSetStateString(msg.Text);
-            UpdateSetStateString(_alphaTurn = turn ? "Y" : "N");
+            UpdateSetStateString(_alphaTurn = turn ? "S" : "C");
             _stateString += "<EOF>";
+            UpdateSetState(_stateString);
         }
 
         public static void GetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn) //set buttons to state
         {
-            UpdateSetState(_stateString);
+            //UpdateSetState(_stateString);
             a1.Text = _a1;
+            if (a1.Text == "X") a1.ForeColor = Color.Crimson;
+            else if (a1.Text == "O") a1.ForeColor = Color.Aqua;
             a2.Text = _a2;
+            if (a2.Text == "X") a2.ForeColor = Color.Crimson;
+            else if (a2.Text == "O") a2.ForeColor = Color.Aqua;
             a3.Text = _a3;
+            if (a3.Text == "X") a3.ForeColor = Color.Crimson;
+            else if (a3.Text == "O") a3.ForeColor = Color.Aqua;
             b1.Text = _b1;
+            if (b1.Text == "X") b1.ForeColor = Color.Crimson;
+            else if (b1.Text == "O") b1.ForeColor = Color.Aqua;
             b2.Text = _b2;
+            if (b2.Text == "X") b2.ForeColor = Color.Crimson;
+            else if (b2.Text == "O") b2.ForeColor = Color.Aqua;
             b3.Text = _b3;
+            if (b3.Text == "X") b3.ForeColor = Color.Crimson;
+            else if (b3.Text == "O") b3.ForeColor = Color.Aqua;
             c1.Text = _c1;
+            if (c1.Text == "X") c1.ForeColor = Color.Crimson;
+            else if (c1.Text == "O") c1.ForeColor = Color.Aqua;
             c2.Text = _c2;
+            if (c2.Text == "X") c2.ForeColor = Color.Crimson;
+            else if (c2.Text == "O") c2.ForeColor = Color.Aqua;
             c3.Text = _c3;
+            if (c3.Text == "X") c3.ForeColor = Color.Crimson;
+            else if (c3.Text == "O") c3.ForeColor = Color.Aqua;
             msg.Text = _msg;
-            if (_alphaTurn == "Y")
+            msg.ForeColor = Color.Yellow;
+            if (_alphaTurn == "S")
             {
                 turn = true;
             }
@@ -157,7 +175,7 @@ namespace ServerSocTacToe
             _c3 = c3.Text;
             _msg = msg.Text;
             pbox.Image = null;
-            turn = false;
+            turn = true;
         }
     }
 }

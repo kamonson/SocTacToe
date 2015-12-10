@@ -31,7 +31,6 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using SocTacToe.Properties;
-using static SocTacToe.AsynchronousClient;
 
 namespace SocTacToe
 {
@@ -40,7 +39,7 @@ namespace SocTacToe
         IPAddress _ip;
         int _port;
         private bool _winner; //_turn tue if win
-        private bool _turn = true; //X True O False
+        private bool _turn = false; //X True O False
         private const string P1 = "X"; //player 1 is x
         private const string P2 = "O"; //player 2 is o
         private int _turnNumber; //track number of games after 9 moves cat's
@@ -49,6 +48,31 @@ namespace SocTacToe
         public SocTacToe() //start up make whats used
         {
             InitializeComponent();
+
+            State.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
+            State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
+
+            using (IpPortForm ipPortForm = new IpPortForm())
+            {
+                if (ipPortForm.ShowDialog() == DialogResult.OK)
+                {
+                }
+                _ip = ipPortForm.GetIp();
+                _port = ipPortForm.GetPort();
+                
+                Thread clientThread = new Thread(() => SynchronousSocketClient.StartClient(_ip, _port));
+                clientThread.Start();
+
+                //System.Threading.Timer timer = new System.Threading.Timer(UpdateBoard, "Some state",
+                //    TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+                //Thread.Sleep(1000); // Wait a bit over 1second
+
+                var timer1 = new System.Windows.Forms.Timer();
+                timer1.Tick += new EventHandler(UpdateBoard);
+                timer1.Interval = 1000; // in miliseconds
+                timer1.Start();
+            }
+
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e) //about, needs updating
@@ -61,28 +85,27 @@ namespace SocTacToe
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) //quit
         {
-            client.Shutdown(SocketShutdown.Both);
-            client.Close();
+            SynchronousSocketClient.sender.Shutdown(SocketShutdown.Both);
+            SynchronousSocketClient.sender.Close();
             Application.Exit();
         }
 
         private void button_click(object sender, EventArgs e) //on any button click run this action, check if player should play, set buttons to _state, make move, set _state to buttons, end _turn
         {
-            State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
-           // if (!_turn) return; //no clicking if not your _turn
+            //State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
+            if (!_turn) return; //no clicking if not your _turn
             if (_winner) return; // no clicking after winning
             var btn = (Button)sender; //make a var
             if (btn.Text == P1 || btn.Text == P2) return; // safe guard from turning changing button
-            btn.BackColor = Color.Black;//background color of buttons
-                                        // _state.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set buttons to current _state
+            btn.BackColor = Color.Black;//background color of buttons                                       
             CheckForWin();  //call 2x instant win results and check for win results begin and end _turn
-            btn.Text = _turn ? P1 : P2;//check _turn, if 0 is X if 1 is O
+            btn.Text = _turn ? P2 : P1;//check _turn, if 0 is X if 1 is O
             btn.ForeColor = _turn ? Color.Crimson : Color.Aqua; //check _turn set color, if 0 make crimson, if 1 make aqua
             _turn = !_turn; //change _turn
             _turnNumber++; //inc trun number
             State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
-            SendState(_ip, _port);
             CheckForWin(); //call 2x instant win results and check for win results begin and end _turn
+            SynchronousSocketClient.StartClient(_ip, _port);
         }
 
         private void CheckForWin() /*check - | \ for a _winner*/
@@ -159,70 +182,18 @@ namespace SocTacToe
             Controls.Add(_pictureBox1);
             _pictureBox1.BackColor = Color.Transparent;
             _pictureBox1.Image = pic;
-            //_pictureBox1.BringToFront(); //problem, button disapears if on top
         }
 
-        private void newGameToolStripMenuItem_Click(object sender, EventArgs e) //call for reset with ne game button
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            State.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2,
-                button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
-
-            using (IpPortForm ipPortForm = new IpPortForm())
-            {
-                if (ipPortForm.ShowDialog() == DialogResult.OK)
-                {
-                }
-                _ip = ipPortForm.GetIp();
-                _port = ipPortForm.GetPort();
-                State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2,
-                    button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
-
-                Thread clientThread = new Thread(() => SendState(_ip, _port));
-                clientThread.Start();
-
-                //System.Threading.Timer timer = new System.Threading.Timer(UpdateBoard, "Some state",
-                //    TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
-                //Thread.Sleep(1000); // Wait a bit over 1second
-
-                var timer1 = new System.Windows.Forms.Timer();
-                timer1.Tick += new EventHandler(UpdateBoard);
-                timer1.Interval = 10; // in miliseconds
-                timer1.Start();
-
-            }
+            State.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn);
+            State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
         }
 
         private void UpdateBoard(object o, EventArgs e)
         {
             State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
             CheckForWin();
-
-            if (button_A1.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_A1.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_A2.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_A2.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_A3.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_A3.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_B1.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_B1.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_B2.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_B2.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_B3.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_B3.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_C1.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_C1.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_C2.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_C2.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_C3.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_C3.Text == "O") button_A1.ForeColor = Color.Aqua;
         }
     }
 }

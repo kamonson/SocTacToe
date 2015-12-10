@@ -26,11 +26,11 @@ What we need to do next:
 using System;
 using System.Drawing;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using ServerSocTacToe.Properties;
-using static ServerSocTacToe.AsynchronousSocketListener;
 
 namespace ServerSocTacToe
 {
@@ -47,6 +47,19 @@ namespace ServerSocTacToe
         public SocTacToe() //start up make whats used
         {
             InitializeComponent();
+
+            State.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
+            State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
+
+            new Thread(SynchronousSocketListener.StartListening).Start();
+
+            //System.Threading.Timer timer = new System.Threading.Timer(UpdateBoard, "Some state", TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+            //Thread.Sleep(1000); // Wait a bit over 1second
+
+            var timer1 = new System.Windows.Forms.Timer();
+            timer1.Tick += new EventHandler(UpdateBoard);
+            timer1.Interval = 1000; // in miliseconds
+            timer1.Start();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e) //about, needs updating
@@ -60,14 +73,14 @@ namespace ServerSocTacToe
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) //quit
         {
             Application.Exit();
-            listener.Shutdown(SocketShutdown.Both);
-            listener.Close();
+            SynchronousSocketListener.handler.Shutdown(SocketShutdown.Both);
+            SynchronousSocketListener.handler.Close();
         }
 
         private void button_click(object sender, EventArgs e) //on any button click run this action, check if player should play, set buttons to _state, make move, set _state to buttons, end _turn
         {
-            State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
-            //if (!_turn) return; //no clicking if not your _turn
+            //State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
+            if (!_turn) return; //no clicking if not your _turn
             if (_winner) return; // no clicking after winning
             var btn = (Button)sender; //make a var
             if (btn.Text == P1 || btn.Text == P2) return; // safe guard from turning changing button
@@ -78,7 +91,7 @@ namespace ServerSocTacToe
             _turn = !_turn; //change _turn
             _turnNumber++; //inc trun number
             State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
-            SendResponse(State.getAR(), State.GetStateString());
+            SynchronousSocketListener.handler.Send(Encoding.ASCII.GetBytes(State.GetStateString()));
             CheckForWin(); //call 2x instant win results and check for win results begin and end _turn
         }
 
@@ -177,50 +190,16 @@ namespace ServerSocTacToe
         {
             State.ResetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turnNumber, ref _winner, _pictureBox1, ref _turn); //zero out _state
             State.SetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn); //set _state to current buttons
-
-            Thread listenerThread = new Thread(StartListening);
-            listenerThread.Start();
-
-            //System.Threading.Timer timer = new System.Threading.Timer(UpdateBoard, "Some state", TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
-            //Thread.Sleep(1000); // Wait a bit over 1second
-
-            var timer1 = new System.Windows.Forms.Timer();
-            timer1.Tick += new EventHandler(UpdateBoard);
-            timer1.Interval = 10; // in miliseconds
-            timer1.Start();
-
         }
 
         private void UpdateBoard(object o, EventArgs e)
         {
             State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
             CheckForWin();
-            if (button_A1.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_A1.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_A2.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_A2.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_A3.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_A3.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_B1.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_B1.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_B2.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_B2.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_B3.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_B3.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_C1.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_C1.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_C2.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_C2.Text == "O") button_A1.ForeColor = Color.Aqua;
-
-            if (button_C3.Text == "X") button_A1.ForeColor = Color.Crimson;
-            else if (button_C3.Text == "O") button_A1.ForeColor = Color.Aqua;
+            if (SynchronousSocketListener.getIPString() != null)
+            {
+                label1.Text = @"IP Adress: " + SynchronousSocketListener.getIPString() + @" | Port: 11000";
+            }
         }
     }
 }
