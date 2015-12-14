@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace ServerSocTacToe
 {
+    /// <summary>
+    /// Use for storing states and updating gameboard
+    /// </summary>
     public static class State
     {
         private static string _a1 = " ";
@@ -20,6 +23,10 @@ namespace ServerSocTacToe
         private static string _alphaTurn = "C";
         private static string _stateString;
 
+        /// <summary>
+        /// Convert state string to state
+        /// </summary>
+        /// <param name="state">StateString</param>
         public static void UpdateSetState(string state)
         {
             _stateString = state;
@@ -37,21 +44,38 @@ namespace ServerSocTacToe
             _alphaTurn = states[10];
         }
 
-        public static bool GetTurn()
-        {
-            return _turn;
-        }
-
+        /// <summary>
+        /// Get state string
+        /// </summary>
+        /// <returns>State String</returns>
         public static string GetStateString()
         {
             return _stateString;
         }
 
+        /// <summary>
+        /// Used in generating state string add ! between state elements
+        /// </summary>
+        /// <param name="state">State String</param>
         private static void UpdateSetStateString(string state)
         {
             _stateString += (state + "!");
         }
 
+        /// <summary>
+        /// Set state equal to board, create state string
+        /// </summary>
+        /// <param name="a1">Button</param>
+        /// <param name="a2">Button</param>
+        /// <param name="a3">Button</param>
+        /// <param name="b1">Button</param>
+        /// <param name="b2">Button</param>
+        /// <param name="b3">Button</param>
+        /// <param name="c1">Button</param>
+        /// <param name="c2">Button</param>
+        /// <param name="c3">Button</param>
+        /// <param name="msg">MSG Label</param>
+        /// <param name="turn">Bool Turn</param>
         public static void SetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn)
         {
             _a1 = a1.Text;
@@ -82,6 +106,20 @@ namespace ServerSocTacToe
             UpdateSetState(_stateString);
         }
 
+        /// <summary>
+        /// Set board equal to state
+        /// </summary>
+        /// <param name="a1">Button</param>
+        /// <param name="a2">Button</param>
+        /// <param name="a3">Button</param>
+        /// <param name="b1">Button</param>
+        /// <param name="b2">Button</param>
+        /// <param name="b3">Button</param>
+        /// <param name="c1">Button</param>
+        /// <param name="c2">Button</param>
+        /// <param name="c3">Button</param>
+        /// <param name="msg">MSG Label</param>
+        /// <param name="turn">Bool Turn</param>
         public static void GetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref bool turn)
         {
             a1.Text = _a1;
@@ -142,7 +180,24 @@ namespace ServerSocTacToe
             }
         }
 
-        public static void ResetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref int turnNumber, ref bool winner, PictureBox pbox, ref bool turn) //restart state
+        /// <summary>
+        /// Set game state to a new game state
+        /// </summary>
+        /// <param name="a1">Button</param>
+        /// <param name="a2">Button</param>
+        /// <param name="a3">Button</param>
+        /// <param name="b1">Button</param>
+        /// <param name="b2">Button</param>
+        /// <param name="b3">Button</param>
+        /// <param name="c1">Button</param>
+        /// <param name="c2">Button</param>
+        /// <param name="c3">Button</param>
+        /// <param name="msg">MSG Label</param>
+        /// <param name="turnNumber">Int Turn Number</param>
+        /// <param name="winner">Bool Winner</param>
+        /// <param name="pbox">Picture Box</param>
+        /// <param name="turn">Bool Turn</param>
+        public static void ResetState(Button a1, Button a2, Button a3, Button b1, Button b2, Button b3, Button c1, Button c2, Button c3, Label msg, ref int turnNumber, ref bool winner, PictureBox pbox, ref bool turn)
         {
             if (turnNumber < 0) throw new ArgumentOutOfRangeException(nameof(turnNumber));
             a1.Text = @" ";

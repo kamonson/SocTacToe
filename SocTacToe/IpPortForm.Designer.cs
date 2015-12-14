@@ -41,18 +41,20 @@ namespace SocTacToe
             // textBoxIP
             // 
             this.textBoxIP.Location = new System.Drawing.Point(16, 89);
-            this.textBoxIP.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxIP.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxIP.Name = "textBoxIP";
             this.textBoxIP.Size = new System.Drawing.Size(227, 22);
             this.textBoxIP.TabIndex = 0;
+            this.textBoxIP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.StartWithEnter);
             // 
             // textBoxPort
             // 
             this.textBoxPort.Location = new System.Drawing.Point(252, 89);
-            this.textBoxPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxPort.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxPort.Name = "textBoxPort";
             this.textBoxPort.Size = new System.Drawing.Size(109, 22);
             this.textBoxPort.TabIndex = 1;
+            this.textBoxPort.KeyDown += new System.Windows.Forms.KeyEventHandler(this.StartWithEnter);
             // 
             // label1
             // 
@@ -78,13 +80,14 @@ namespace SocTacToe
             // 
             this.buttonStart.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.buttonStart.Location = new System.Drawing.Point(263, 137);
-            this.buttonStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonStart.Margin = new System.Windows.Forms.Padding(4);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(100, 28);
             this.buttonStart.TabIndex = 4;
             this.buttonStart.Text = "Start";
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
+            this.buttonStart.KeyDown += new System.Windows.Forms.KeyEventHandler(this.StartWithEnter);
             // 
             // IpPortForm
             // 
@@ -99,7 +102,7 @@ namespace SocTacToe
             this.Controls.Add(this.textBoxIP);
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "IpPortForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "IpPortForm";

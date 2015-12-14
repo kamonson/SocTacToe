@@ -5,9 +5,11 @@ using System.Threading;
 using System.Windows.Forms;
 using ServerSocTacToe.Properties;
 
-
 namespace ServerSocTacToe
 {
+    /// <summary>
+    /// Class controlls the flow of the game, calls state and socket methods to implement state setting and passing
+    /// </summary>
     public partial class SocTacToe : Form
     {
         private bool _winner;
@@ -19,6 +21,9 @@ namespace ServerSocTacToe
         public delegate void Del();
         delegate void SetTextCallback();
 
+        /// <summary>
+        /// Sets a blank state, turn/win variables to defualt, starts socket
+        /// </summary>
         public SocTacToe()
         {
             InitializeComponent();
@@ -29,6 +34,11 @@ namespace ServerSocTacToe
             new Thread(() => SynchronousSocketListener.StartListening(delegateHandler)).Start();
         }
 
+        /// <summary>
+        /// Displays help info
+        /// </summary>
+        /// <param name="sender">Help was clicked</param>
+        /// <param name="e">Click event</param>
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show(@"CS 313 networking project" + Environment.NewLine
@@ -37,6 +47,11 @@ namespace ServerSocTacToe
                 + @"Seriously? I think you'll figure it out...", @"Soc Tac Toe");
         }
 
+        /// <summary>
+        /// Quit command
+        /// </summary>
+        /// <param name="sender">Exit was clicked</param>
+        /// <param name="e">Click Event</param>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (SynchronousSocketListener.Handler != null)
@@ -46,6 +61,11 @@ namespace ServerSocTacToe
             Application.Exit();
         }
 
+        /// <summary>
+        /// Check for win, update state, listen for move, update turn, update state, pass state, check for win
+        /// </summary>
+        /// <param name="sender">Button was clicked</param>
+        /// <param name="e">Click Event</param>
         private void button_click(object sender, EventArgs e)
         {
             State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
@@ -70,6 +90,9 @@ namespace ServerSocTacToe
             CheckForWin();
         }
 
+        /// <summary>
+        /// Check to see if win occured or draw, if so show where
+        /// </summary>
         private void CheckForWin()
         {
             /*hor win*/
@@ -141,6 +164,9 @@ namespace ServerSocTacToe
             }
         }
 
+        /// <summary>
+        /// Clears server state and gets ready to play again
+        /// </summary>
         private void EndGame()
         {
             _winner = true;
@@ -148,6 +174,10 @@ namespace ServerSocTacToe
             _turn = false;
         }
 
+        /// <summary>
+        /// display win/draw picture
+        /// </summary>
+        /// <param name="pic">Line based on win, C for draw</param>
         private void ShowPicture(Image pic)
         {
             _pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -159,6 +189,9 @@ namespace ServerSocTacToe
             _pictureBox1.Show();
         }
 
+        /// <summary>
+        /// Delegate function for updating board--called in socket class
+        /// </summary>
         private void UpdateBoard()
         {
             if (label1.InvokeRequired)

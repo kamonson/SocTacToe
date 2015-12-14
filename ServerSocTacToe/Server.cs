@@ -5,10 +5,17 @@ using System.Text;
 
 namespace ServerSocTacToe
 {
+    /// <summary>
+    /// Socket for Server, listen and a call back to update Form function is handled here, but response is processed on the form.
+    /// </summary>
     public static class SynchronousSocketListener
     {
         private static IPAddress _ipAddress;
 
+        /// <summary>
+        /// Get the Server IP Address
+        /// </summary>
+        /// <returns></returns>
         public static string GetIpString()
         {
             if (_ipAddress != null) return _ipAddress.ToString();
@@ -21,6 +28,10 @@ namespace ServerSocTacToe
         // Incoming data from the client.
         public static string data;
 
+        /// <summary>
+        /// Sets IP and Port for game use, then listes for client connection, updates Form GUI with callback. Response is handled in Form turn Managment
+        /// </summary>
+        /// <param name="updateFormCallback">Run Update on form 1</param>
         public static void StartListening(SocTacToe.Del updateFormCallback)
         {
             // Data buffer for incoming data.
@@ -30,7 +41,8 @@ namespace ServerSocTacToe
             // Dns.GetHostName returns the name of the 
             // host running the application.
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            _ipAddress = ipHostInfo.AddressList[4];
+            //1 for school IP and 4 for home
+            _ipAddress = ipHostInfo.AddressList[1];
             IPEndPoint localEndPoint = new IPEndPoint(_ipAddress, 11000);
             Console.WriteLine(_ipAddress.ToString());
             // Create a TCP/IP socket.
@@ -60,6 +72,7 @@ namespace ServerSocTacToe
                         data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
                         if (data.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
                         {
+                            //update the form GUI to reflect recived state then wait for user input
                             State.UpdateSetState(Encoding.ASCII.GetString(bytes, 0, bytesRec));
                             updateFormCallback();
                             break;
@@ -77,6 +90,9 @@ namespace ServerSocTacToe
             }
         }
 
+        /// <summary>
+        /// Shut down the socket
+        /// </summary>
         public static void ShutdownConnection()
         {
             if (Handler != null)

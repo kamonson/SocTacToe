@@ -7,6 +7,9 @@ using SocTacToe.Properties;
 
 namespace SocTacToe
 {
+    /// <summary>
+    /// Class controlls the flow of the game, calls state and socket methods to implement state setting and passing
+    /// </summary>
     public partial class SocTacToe : Form
     {
         IPAddress _ip;
@@ -20,7 +23,10 @@ namespace SocTacToe
         public delegate void Del();
         Del delegateHandler;
         delegate void SetTextCallback();
-
+        
+        /// <summary>
+        /// Sets a blank state, turn/win variables to defualt, starts socket and ip info form
+        /// </summary>
         public SocTacToe()
         {
             InitializeComponent();
@@ -41,6 +47,11 @@ namespace SocTacToe
             }
         }
 
+        /// <summary>
+        /// Displays help info
+        /// </summary>
+        /// <param name="sender">Help was clicked</param>
+        /// <param name="e">Click event</param>
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show(@"CS 313 networking project" + Environment.NewLine
@@ -49,6 +60,11 @@ namespace SocTacToe
                 + @"Seriously? I think you'll figure it out...", @"Soc Tac Toe");
         }
 
+        /// <summary>
+        /// Quit command
+        /// </summary>
+        /// <param name="sender">Exit was clicked</param>
+        /// <param name="e">Click Event</param>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             {
@@ -60,6 +76,11 @@ namespace SocTacToe
             }
         }
 
+        /// <summary>
+        /// Check for win, update state, listen for move, update turn, update state, pass state, check for win
+        /// </summary>
+        /// <param name="sender">Button was clicked</param>
+        /// <param name="e">Click Event</param>
         private void button_click(object sender, EventArgs e)
         {
             State.GetState(button_A1, button_A2, button_A3, button_B1, button_B2, button_B3, button_C1, button_C2, button_C3, Lbl_Msg, ref _turn);
@@ -78,6 +99,9 @@ namespace SocTacToe
             new Thread(() => SynchronousSocketClient.StartClient(_ip, _port, delegateHandler)).Start();
         }
 
+        /// <summary>
+        /// Check to see if win occured or draw, if so show where
+        /// </summary>
         private void CheckForWin()
         {
             /*hor win*/
@@ -160,6 +184,10 @@ namespace SocTacToe
             }
         }
 
+        /// <summary>
+        /// display win/draw picture
+        /// </summary>
+        /// <param name="pic">Line based on win, C for draw</param>
         private void ShowPicture(Image pic)
         {
             _pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -172,6 +200,11 @@ namespace SocTacToe
             _pictureBox1.Show();
         }
 
+        /// <summary>
+        /// Start New Game (client control only) on player turn
+        /// </summary>
+        /// <param name="sender">New Game Clicked</param>
+        /// <param name="e">Click Event</param>
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_turn == false)
@@ -186,6 +219,9 @@ namespace SocTacToe
             }
         }
 
+        /// <summary>
+        /// Delegate function for updating board--called in socket class
+        /// </summary>
         private void UpdateBoard()
         {
             if (Lbl_Msg.InvokeRequired)
