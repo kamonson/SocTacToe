@@ -162,10 +162,13 @@ namespace SocTacToe
 
         private void ShowPicture(Image pic)
         {
-            _pictureBox1.Size = new Size(400, 400);
+            _pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            _pictureBox1.Anchor = AnchorStyles.None;
+            _pictureBox1.Location = new Point(button_A1.Location.X - 36, button_A1.Location.Y - 48);
             Controls.Add(_pictureBox1);
             _pictureBox1.BackColor = Color.Transparent;
             _pictureBox1.Image = pic;
+            Top = (this.ClientSize.Height - Height) / 2;
             _pictureBox1.Show();
         }
 

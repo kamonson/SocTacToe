@@ -77,8 +77,8 @@ namespace SocTacToe
             if (Sender != null)
             {
                // Sender.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-                Sender.Disconnect(false);
-                Sender.Shutdown(SocketShutdown.Both);
+                //Sender.Disconnect(false);
+               // Sender.Shutdown(SocketShutdown.Both);
                 Sender.Close();
             }
         }

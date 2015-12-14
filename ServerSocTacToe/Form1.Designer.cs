@@ -88,7 +88,7 @@ namespace ServerSocTacToe
             this.button_A3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_A3.Font = new System.Drawing.Font("Gill Sans Ultra Bold Condensed", 28F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_A3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button_A3.Location = new System.Drawing.Point(329, 86);
+            this.button_A3.Location = new System.Drawing.Point(339, 86);
             this.button_A3.Margin = new System.Windows.Forms.Padding(4);
             this.button_A3.Name = "button_A3";
             this.button_A3.Size = new System.Drawing.Size(100, 97);
@@ -133,7 +133,7 @@ namespace ServerSocTacToe
             this.button_B3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_B3.Font = new System.Drawing.Font("Gill Sans Ultra Bold Condensed", 28F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_B3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button_B3.Location = new System.Drawing.Point(329, 226);
+            this.button_B3.Location = new System.Drawing.Point(339, 226);
             this.button_B3.Margin = new System.Windows.Forms.Padding(4);
             this.button_B3.Name = "button_B3";
             this.button_B3.Size = new System.Drawing.Size(100, 97);
@@ -178,7 +178,7 @@ namespace ServerSocTacToe
             this.button_C3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_C3.Font = new System.Drawing.Font("Gill Sans Ultra Bold Condensed", 28F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_C3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button_C3.Location = new System.Drawing.Point(329, 362);
+            this.button_C3.Location = new System.Drawing.Point(339, 362);
             this.button_C3.Margin = new System.Windows.Forms.Padding(4);
             this.button_C3.Name = "button_C3";
             this.button_C3.Size = new System.Drawing.Size(100, 92);
@@ -196,7 +196,6 @@ namespace ServerSocTacToe
             this.Lbl_Msg.Name = "Lbl_Msg";
             this.Lbl_Msg.Size = new System.Drawing.Size(0, 17);
             this.Lbl_Msg.TabIndex = 10;
-            this.Lbl_Msg.Click += new System.EventHandler(this.Lbl_Msg_Click);
             // 
             // menuStrip1
             // 
@@ -210,7 +209,7 @@ namespace ServerSocTacToe
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(183, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(91, 24);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -221,13 +220,13 @@ namespace ServerSocTacToe
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
