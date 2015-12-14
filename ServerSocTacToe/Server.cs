@@ -30,7 +30,7 @@ namespace ServerSocTacToe
             // Dns.GetHostName returns the name of the 
             // host running the application.
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            _ipAddress = ipHostInfo.AddressList[1];
+            _ipAddress = ipHostInfo.AddressList[4];
             IPEndPoint localEndPoint = new IPEndPoint(_ipAddress, 11000);
             Console.WriteLine(_ipAddress.ToString());
             // Create a TCP/IP socket.

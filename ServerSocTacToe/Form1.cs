@@ -171,5 +171,10 @@ namespace ServerSocTacToe
                 label1.Text = @"IP Adress: " + SynchronousSocketListener.GetIpString() + @"   Port: 11000";
             }
         }
+
+        private void Lbl_Msg_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
