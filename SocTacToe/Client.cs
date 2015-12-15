@@ -5,10 +5,20 @@ using System.Text;
 
 namespace SocTacToe
 {
+    /// <summary>
+    /// modified socket to send states and wait for a state reply from server
+    /// </summary>
     public static class SynchronousSocketClient
     {
         //handler is a public static object to conrol client end socket
         public static Socket Sender;
+
+        /// <summary>
+        /// Socket for the client to pass states, also calls back to the form and updates GUI
+        /// </summary>
+        /// <param name="ip">IPAddress</param>
+        /// <param name="port">Int Port</param>
+        /// <param name="updateFormCallback">Run Update on Form1</param>
         public static void StartClient(IPAddress ip, int port, SocTacToe.Del updateFormCallback)
         {
             // Data buffer for incoming data.
@@ -35,7 +45,7 @@ namespace SocTacToe
                     // Encode the data string into a byte array.
                     byte[] msg = Encoding.ASCII.GetBytes(State.GetStateString());
 
-                    // Send the data through the socket.
+                    // Send the state through the socket.
                     Sender.Send(msg);
                     updateFormCallback();
                     // Receive the response from the remote device.
@@ -43,6 +53,7 @@ namespace SocTacToe
                     Console.WriteLine(@"Echoed test = {0}",
                         Encoding.ASCII.GetString(bytes, 0, bytesRec));
 
+                    //Update state from response
                     State.UpdateSetState(Encoding.ASCII.GetString(bytes, 0, bytesRec));
                     Console.WriteLine(@"recived response: " + Encoding.ASCII.GetString(bytes, 0, bytesRec));
                     updateFormCallback();
@@ -72,13 +83,13 @@ namespace SocTacToe
 
         }
 
+        /// <summary>
+        /// close listener socket
+        /// </summary>
         public static void ShutdownConnection()
         {
             if (Sender != null)
             {
-                Sender.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-                Sender.Disconnect(false);
-                Sender.Shutdown(SocketShutdown.Both);
                 Sender.Close();
             }
         }
